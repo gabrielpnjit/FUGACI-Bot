@@ -8,7 +8,7 @@ npm install:
     - copy rules from eslintrc.json
 
 in .env file, include:
-DISC_TOKEN="Discord Bot/Application Token"
-GUILD_ID="Discord Server ID"
-CLIENT_ID="Discord Bot/Application ID"
-BH_KEY="Brawlhalla API Key"
+- DISC_TOKEN="Discord Bot/Application Token"
+- GUILD_ID="Discord Server ID"
+- CLIENT_ID="Discord Bot/Application ID"
+- BH_KEY="Brawlhalla API Key"

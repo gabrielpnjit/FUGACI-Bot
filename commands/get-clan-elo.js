@@ -12,6 +12,10 @@ module.exports = {
                 let members = '';
                 let elos = '';
                 let count = 1;
+                // this for block is for getting a string of members
+                // and their elos from the getClanElo() returned data
+                // these two strings, members and elos are passed into
+                // two seprate fields in the embedbuilder as values
                 for (let member in res) {
                     let elo = res[member];
                     members += `${count}. ${member} \n`;
@@ -23,8 +27,9 @@ module.exports = {
                         elos += 'N/A \n';
                     }
                 }
-                console.log(members);
-                console.log(elos);
+                // console.log(members);
+                // console.log(elos);
+                // create embedded message
                 const embed = new EmbedBuilder()
                     .setTitle('FUGACI 1v1 Ranked Leaderboard')
                     // .setDescription('This is a desription')

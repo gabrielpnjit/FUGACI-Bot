@@ -48,7 +48,8 @@ module.exports = {
                 interaction.editReply({
                     embeds: [embed],
                 });
-            } else {
+            }
+            else {
                 console.log('Error with getClanElo occurred');
                 interaction.editReply('Unexpected Error!');
             }

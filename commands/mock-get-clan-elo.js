@@ -24,8 +24,6 @@ module.exports = {
                     elos += 'N/A \n';
                 }
             }
-            console.log(members);
-            console.log(elos);
             const embed = new EmbedBuilder()
                 .setTitle('FUGACI 1v1 Ranked Leaderboard')
                 // .setDescription('This is a desription')
@@ -45,7 +43,8 @@ module.exports = {
             interaction.editReply({
                 embeds: [embed],
             });
-        } else {
+        }
+        else {
             console.log('Error with getClanElo occurred');
             interaction.editReply('Unexpected Error!');
         }

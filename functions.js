@@ -44,6 +44,10 @@ async function getClanElo() {
             const member = JSON.stringify(clan[i]);
             members[JSON.parse(member).brawlhalla_id] = JSON.parse(member).name;
         }
+// temporarily hardcode console/mobile players
+        members['45923794'] = 'Jaboogle5274';
+        members['47021368'] = 'Mokoffee(Mobile Acc)';
+        members['20661966'] = 'KrY Optics';
 // create dictionary of member's names as keys and their current peak elo as values
 // yt vid helped here too
         let failedIds = [];

@@ -46,6 +46,7 @@ async function getClanElo() {
         }
 // create dictionary of member's names as keys and their current peak elo as values
 // yt vid helped here too
+        let failedIds = [];
         for (const id in members) {
             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
 // specifically this "await" is the key
@@ -55,13 +56,25 @@ async function getClanElo() {
                 if (peakElo != undefined) {
                     memberElo[members[id]] = peakElo;
                 }
- else {
+                else {
                     memberElo[members[id]] = -1;
                 }
             })
             .catch(error => {
-                console.log(error);
+                // console.log(error);
+                failedIds.push(id);
+                // console.log(`Error getting data for: ${id} (probably timeout error)`);
             });
+        }
+// check for ids with errors
+// maybe do a second passthrough with failed ids
+        if (failedIds.length != 0) {
+            for (let i = 0; i < failedIds.length; i++) {
+                console.log(`Error with ${failedIds[i]}`);
+            }
+        }
+        else {
+            console.log('getClanElo Worked Perfectly!');
         }
 // sort that shiz
         let sortedMemberElo = sort_object(memberElo);

@@ -5,6 +5,7 @@ module.exports = {
         .setName('ping')
         .setDescription('Check if bot is alive'),
     async execute(interaction) {
-        await interaction.reply('I am alive');
+        const em = interaction.guild.emojis.cache.find(emoji => emoji.name === 'diamond');
+        await interaction.reply(`${em} I am alive`);
     },
 };

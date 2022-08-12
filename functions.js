@@ -60,7 +60,8 @@ async function getClanElo() {
                 }
             })
             .catch(error => {
-                console.log(error);
+                // console.log(error);
+                console.log(`Error getting data for: ${id} (probably timeout error)`);
             });
         }
 // sort that shiz

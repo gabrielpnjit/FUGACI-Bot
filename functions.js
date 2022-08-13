@@ -19,6 +19,15 @@ function sort_object(obj) {
     return (sorted_obj);
 }
 
+// obtain id from url player search request url
+// https://api.brawlhalla.com/player/id/ranked?api_key=BHKEY
+// would return just 'id'
+function idFromUrl(url) {
+    let id = url.replace('https://api.brawlhalla.com/player/', '');
+    id = id.replace (`/ranked?api_key=${BHKEY}`, '');
+    return id;
+}
+
 // return "dictionary" of all FUGACI member's (keys) elos (values) sorted from highest to lowest elo
 // members who have not played ranked yet this season have a value of -1
 // https://www.youtube.com/watch?v=xWRp1K8ga9s helped me out so much with this function
@@ -51,11 +60,17 @@ async function getClanElo() {
 // create dictionary of member's names as keys and their current peak elo as values
 // yt vid helped here too
         let failedIds = [];
+        let urls = [];
         for (const id in members) {
             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
-// specifically this "await" is the key
-            await axios.get(url)
+            urls.push(url);
+        }
+// faster api requests!
+        await Promise.all(urls.map((url) => {
+            let id = idFromUrl(url);
+            return axios.get(url)
             .then(result => {
+                // console.log(`got data for ${members[id]}`);
                 const peakElo = result.data.peak_rating;
                 if (peakElo != undefined) {
                     memberElo[members[id]] = peakElo;
@@ -69,7 +84,30 @@ async function getClanElo() {
                 failedIds.push(id);
                 // console.log(`Error getting data for: ${id} (probably timeout error)`);
             });
-        }
+        }));
+
+// this for loop is the slow version of the api request for all members, leaving it here in case
+// new faster version doesnt work
+//         for (const id in members) {
+//             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
+// // specifically this "await" is the key
+//             await axios.get(url)
+//             .then(result => {
+//                 const peakElo = result.data.peak_rating;
+//                 if (peakElo != undefined) {
+//                     memberElo[members[id]] = peakElo;
+//                 }
+//                 else {
+//                     memberElo[members[id]] = -1;
+//                 }
+//             })
+//             .catch(error => {
+//                 // console.log(error);
+//                 failedIds.push(id);
+//                 // console.log(`Error getting data for: ${id} (probably timeout error)`);
+//             });
+//         }
+
 // check for ids with errors
 // maybe do a second passthrough with failed ids
         if (failedIds.length != 0) {

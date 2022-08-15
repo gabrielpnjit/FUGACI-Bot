@@ -31,41 +31,55 @@ function idFromUrl(url) {
 // return "dictionary" of all FUGACI member's (keys) elos (values) sorted from highest to lowest elo
 // members who have not played ranked yet this season have a value of -1
 // https://www.youtube.com/watch?v=xWRp1K8ga9s helped me out so much with this function
+let prevResult = {};
 async function getClanElo() {
     try {
+        let errorFlag = false;
         let clan;
         let clanID = '682808';
         let req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
         const members = {};
         const memberElo = {};
-// this is where the yt video helped me. finally figured out how to "wait" for api call to finish
-// basically has to do with the scope of these functions and how you can only use await in async functions
-// but sometimes the functions weren't clearly in different scopes
+        // this is where the yt video helped me
         await axios.get(req)
         .then(result => {
             clan = result.data.clan;
         })
         .catch(error => {
-            console.log(error);
+            // console.log(error);
+            errorFlag = true;
+            console.log('\x1b[31m', 'ERR: Probably API Rate Limit Reached');
         });
-// create dictionary of all member brawlhalla ids as keys and names as values
+        if (errorFlag) {
+            if (Object.keys(prevResult).length != 0) {
+                console.log('\x1b[32m', 'SUCCESS: Returned most recent successful data');
+                return prevResult;
+            }
+            else {
+                console.log('\x1b[33m', 'WARNING: No recent data was found/returned');
+                return null;
+            }
+        }
+        // create dictionary of all member brawlhalla ids as keys and names as values
         for (let i = 0; i < clan.length; i++) {
             const member = JSON.stringify(clan[i]);
             members[JSON.parse(member).brawlhalla_id] = JSON.parse(member).name;
         }
-// temporarily hardcode console/mobile players
+        // temporarily hardcode console/mobile players
         members['45923794'] = 'Jaboogle5274';
         members['47021368'] = 'Mokoffee(Mobile Acc)';
         members['20661966'] = 'KrY Optics';
-// create dictionary of member's names as keys and their current peak elo as values
-// yt vid helped here too
+
+        // create dictionary of member's names as keys and their current peak elo as values
+        // yt vid helped here too
         let failedIds = [];
         let urls = [];
         for (const id in members) {
             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
             urls.push(url);
         }
-// faster api requests!
+
+        // obtain elo of each member in clan
         await Promise.all(urls.map((url) => {
             let id = idFromUrl(url);
             return axios.get(url)
@@ -86,40 +100,60 @@ async function getClanElo() {
             });
         }));
 
-// this for loop is the slow version of the api request for all members, leaving it here in case
-// new faster version doesnt work
-//         for (const id in members) {
-//             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
-// // specifically this "await" is the key
-//             await axios.get(url)
-//             .then(result => {
-//                 const peakElo = result.data.peak_rating;
-//                 if (peakElo != undefined) {
-//                     memberElo[members[id]] = peakElo;
-//                 }
-//                 else {
-//                     memberElo[members[id]] = -1;
-//                 }
-//             })
-//             .catch(error => {
-//                 // console.log(error);
-//                 failedIds.push(id);
-//                 // console.log(`Error getting data for: ${id} (probably timeout error)`);
-//             });
-//         }
+        // rerun through failed ids
+        furls = [];
+        if (failedIds != 0) {
+            for (let i = 0; i < failedIds.length; i++) {
+                let id = failedIds[i];
+                let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
+                furls.push(url);
+            }
+            failedIds = [];
+            await Promise.all(furls.map((url) => {
+                let id = idFromUrl(url);
+                return axios.get(url)
+                .then(result => {
+                    // console.log(`got data for 2nd run through for ${members[id]}`);
+                    const peakElo = result.data.peak_rating;
+                    if (peakElo != undefined) {
+                        memberElo[members[id]] = peakElo;
+                    }
+                    else {
+                        memberElo[members[id]] = -1;
+                    }
+                })
+                .catch(error => {
+                    // console.log(error);
+                    failedIds.push(id);
+                    // console.log(`Error getting data for: ${id} (ERROR)`);
+                });
+            }));
+        }
+        let sortedMemberElo = sort_object(memberElo);
 
-// check for ids with errors
-// maybe do a second passthrough with failed ids
+        // check for ids with errors
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {
-                console.log(`Error with ${failedIds[i]}`);
+                console.log('\x1b[31m', `ERR: Obtaining data for ${failedIds[i]}`);
+                if (Object.keys(prevResult).length != 0) {
+                    console.log('\x1b[32m', 'SUCCESS: Returned most recent successful data');
+                    return prevResult;
+                }
+                else {
+                    return null;
+                }
             }
+        } else if (furls.length != 0) {
+            console.log('\x1b[32m', 'SUCCESS: But had to do another request with');
+            for (let i = 0; i < furls.length; i++) {
+                console.log('\x1b[0m', furls[i]);
+            }
+            prevResult = sortedMemberElo;
         }
         else {
-            console.log('getClanElo Worked Perfectly!');
+            console.log('\x1b[32m', 'SUCCESS: getClanElo Worked Perfectly!');
+            prevResult = sortedMemberElo;
         }
-// sort that shiz
-        let sortedMemberElo = sort_object(memberElo);
         return sortedMemberElo;
     }
  catch (e) {
@@ -171,3 +205,25 @@ module.exports = {
     getClanElo,
     mockGetClanElo,
 };
+
+// this for loop is the slow version of the api request for all members, leaving it here in case
+// new faster version doesnt work
+//         for (const id in members) {
+//             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
+// // specifically this "await" is the key
+//             await axios.get(url)
+//             .then(result => {
+//                 const peakElo = result.data.peak_rating;
+//                 if (peakElo != undefined) {
+//                     memberElo[members[id]] = peakElo;
+//                 }
+//                 else {
+//                     memberElo[members[id]] = -1;
+//                 }
+//             })
+//             .catch(error => {
+//                 // console.log(error);
+//                 failedIds.push(id);
+//                 // console.log(`Error getting data for: ${id} (probably timeout error)`);
+//             });
+//         }

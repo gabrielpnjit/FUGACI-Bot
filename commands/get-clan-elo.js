@@ -68,8 +68,11 @@ module.exports = {
                     embeds: [embed],
                 });
             }
+            else if (res == null) {
+                interaction.editReply('API Request Limit Reached! Please try again in a few minutes!');
+            }
             else {
-                console.log('Error with getClanElo occurred');
+                console.log('\x1b[31m', 'Error with getClanElo occurred');
                 interaction.editReply('Unexpected Error!');
             }
         },

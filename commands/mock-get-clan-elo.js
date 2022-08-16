@@ -1,6 +1,22 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const bhapi = require('../functions.js');
-
+const pages = [];
+function getRow(currPage) {
+    const row = new ActionRowBuilder()
+    .addComponents(
+        new ButtonBuilder()
+            .setCustomId('prev')
+            .setLabel('Prev')
+            .setDisabled(currPage == 1)
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+            .setCustomId('next')
+            .setLabel('Next')
+            .setDisabled(currPage == pages.length)
+            .setStyle(ButtonStyle.Primary),
+    );
+    return row;
+}
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mockleaderboard')
@@ -15,6 +31,9 @@ module.exports = {
         const tin = interaction.client.emojis.cache.get('1004897800091336795');
 
         if (res) {
+            let pagesMembers = [];
+            let pagesElos = [];
+            let pageCount = 0;
             let members = '';
             let elos = '';
             let count = 1;
@@ -32,7 +51,17 @@ module.exports = {
                 } else {
                     rank = tin;
                 }
-                members += `${rank} ${count}. ${member} \n`;
+                let str = `${rank} ${count}. ${member} \n`;
+                let temp = members;
+                temp += str;
+                if (temp.length > 1024) {
+                    pagesMembers.push(members);
+                    pagesElos.push(elos);
+                    members = '';
+                    elos = '';
+                    pageCount++;
+                }
+                members += str;
                 if (elo != -1) {
                     elos += res[member] + '\n';
                     count++;
@@ -41,29 +70,60 @@ module.exports = {
                     elos += 'N/A \n';
                 }
             }
-            const embed = new EmbedBuilder()
+            pagesMembers.push(members);
+            pagesElos.push(elos);
+            for (let i = 0; i < pagesMembers.length; i++) {
+                pages.push(new EmbedBuilder()
                 .setTitle('FUGACI 1v1 Ranked Leaderboard')
-                // .setDescription('This is a desription')
                 .setColor(0x18e1ee)
                 .setThumbnail('https://cdn.discordapp.com/attachments/689908352079495221/1007780011211767878/fugaci-removebg-preview1.png')
-                // .setImage(interaction.client.user.displayAvatarURL())
                 .setTimestamp(Date.now())
-                // .setFooter({
-                //     iconURL: client.user.displayAvatarURL(),
-                //     text: client.user.tag,
-                // })
                 .setURL('http://corehalla.com/stats/clan/682808')
+                .setFooter({ text: `Page ${i + 1} of ${pagesMembers.length}` })
                 .addFields(
-                    { name: 'Member', value: members, inline: true },
-                    { name: 'Elo', value: elos, inline: true },
+                    { name: 'Member', value: pagesMembers[i], inline: true },
+                    { name: 'Elo', value: pagesElos[i], inline: true },
 
-                );
+                ));
+            }
+            let currPage = 1;
+            let row = getRow(currPage);
             interaction.editReply({
-                embeds: [embed],
+                embeds: [pages[0]],
+                components: [row],
+            });
+            let filter;
+            const time = 1000 * 60 * 5;
+            let collector = interaction.channel.createMessageComponentCollector({ filter, time });
+
+            collector.on('collect', (btnInt) => {
+                if (!btnInt) {
+                    return;
+                }
+
+                btnInt.deferUpdate();
+
+                if (btnInt.customId === 'next' && currPage < pages.length) {
+                    currPage++;
+                    interaction.editReply({
+                        embeds: [pages[currPage - 1]],
+                        components: [getRow(currPage)],
+                    });
+                }
+                else if (btnInt.customId === 'prev' && currPage > 1) {
+                    currPage--;
+                    interaction.editReply({
+                        embeds: [pages[currPage - 1]],
+                        components: [getRow(currPage)],
+                    });
+                }
+                else {
+                    return;
+                }
             });
         }
         else {
-            console.log('Error with getClanElo occurred');
+            console.log('\x1b[31m', 'Error with getClanElo occurred');
             interaction.editReply('Unexpected Error!');
         }
     },

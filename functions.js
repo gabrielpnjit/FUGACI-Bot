@@ -32,12 +32,12 @@ function idFromUrl(url) {
 // members who have not played ranked yet this season have a value of -1
 // https://www.youtube.com/watch?v=xWRp1K8ga9s helped me out so much with this function
 let prevResult = {};
-async function getClanElo() {
+async function getClanElo(id) {
     try {
         let errorFlag = false;
         let clan;
-        let clanID = '682808';
-        let req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
+        const clanID = id;
+        const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
         const members = {};
         const memberElo = {};
         // this is where the yt video helped me
@@ -206,8 +206,8 @@ async function mockGetClanElo() {
 }
 
 // print result of getClanElo()
-async function printClanElo() {
-    let res = await getClanElo();
+async function printClanElo(id) {
+    let res = await getClanElo(id);
     console.log(res);
 }
 

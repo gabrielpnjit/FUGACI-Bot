@@ -24,7 +24,7 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-// button handling stuf
+// button handling stuff
 client.buttons = new Collection();
 const buttonsPath = path.join(__dirname, 'buttons');
 const buttonFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
@@ -33,6 +33,17 @@ for (const file of buttonFiles) {
     const filePath = path.join(buttonsPath, file);
     const button = require(filePath);
     client.buttons.set(button.data.name, button);
+}
+
+// modal handling stuff
+client.modals = new Collection();
+const modalsPath = path.join(__dirname, 'modals');
+const modalFiles = fs.readdirSync(modalsPath).filter(file => file.endsWith('.js'));
+
+for (const file of modalFiles) {
+    const filePath = path.join(modalsPath, file);
+    const modal = require(filePath);
+    client.modals.set(modal.data.name, modal);
 }
 
 // event handling stuff

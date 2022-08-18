@@ -1,9 +1,16 @@
 # FUGACI-Bot
 Discord server bot for FUGACI Brawlhalla clan server
 
+# Commands
+/leaderboard
+/bugreport
+/suggestion
+
+### Dependencies
 npm install:
 - discord.js v14
 - dotenv
+- axios
 - eslint
     - copy rules from eslintrc.json
 

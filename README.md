@@ -2,9 +2,9 @@
 Discord server bot for FUGACI Brawlhalla clan server
 
 # Commands
-/leaderboard
-/bugreport
-/suggestion
+- /leaderboard
+- /bugreport
+- /suggestion
 
 ### Dependencies
 npm install:

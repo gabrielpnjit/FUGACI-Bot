@@ -11,10 +11,12 @@ module.exports = {
         const titleInput = new TextInputBuilder()
             .setCustomId('suggestionTitle')
             .setLabel('Subject')
+            .setMaxLength(100)
             .setStyle(TextInputStyle.Short);
         const bodyInput = new TextInputBuilder()
             .setCustomId('suggestionBody')
             .setLabel('Please explain your suggestion(s)!')
+            .setMaxLength(1000)
             .setStyle(TextInputStyle.Paragraph);
         const firstActionRow = new ActionRowBuilder().addComponents(titleInput);
         const secondActionRow = new ActionRowBuilder().addComponents(bodyInput);

@@ -92,9 +92,10 @@ module.exports = {
                     embeds: [pages[0]],
                     components: [row],
                 });
+
+                const message = await interaction.fetchReply();
                 let filter;
-                const time = 1000 * 60 * 5;
-                let collector = interaction.channel.createMessageComponentCollector({ filter, time });
+                const collector = message.createMessageComponentCollector({ filter, time: 60000 });
 
                 collector.on('collect', (btnInt) => {
                     if (!btnInt) {
@@ -120,6 +121,13 @@ module.exports = {
                     else {
                         return;
                     }
+                    collector.on('end', collected => {
+                        console.log(`Collected ${collected.size} items`);
+                        console.log('Collector Ended');
+                        interaction.editReply({
+                            components: [],
+                        });
+                    });
                 });
             }
             else if (res == null) {

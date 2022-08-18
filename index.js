@@ -61,5 +61,19 @@ for (const file of eventFiles) {
     }
 }
 
+// discord api error handling
+process.on('unhandledRejection', async (err) => {
+    console.error('Unhandled Promise Rejection:\n', err);
+  });
+process.on('uncaughtException', async (err) => {
+    console.error('Uncaught Promise Exception:\n', err);
+  });
+process.on('uncaughtExceptionMonitor', async (err) => {
+    console.error('Uncaught Promise Exception (Monitor):\n', err);
+  });
+// process.on('multipleResolves', async (type, promise, reason) => {
+//     console.error('Multiple Resolves:\n', type, promise, reason);
+//   });
+
 // login/start bot
 client.login(TOKEN);

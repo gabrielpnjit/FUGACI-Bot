@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     data: {
@@ -16,6 +16,18 @@ module.exports = {
             const guild = interaction.guild;
             const iconUrl = interaction.guild.iconURL();
 
+            const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('eloReject')
+                    .setLabel('Reject')
+                    .setStyle(ButtonStyle.Danger),
+                new ButtonBuilder()
+                    .setCustomId('eloAccept')
+                    .setLabel('Accept')
+                    .setStyle(ButtonStyle.Success),
+            );
+
             const embed = new EmbedBuilder()
                 .setColor('#00FFFF')
                 .setTitle('Elo Request')
@@ -30,7 +42,7 @@ module.exports = {
                 .setFooter({ text: `Discord Server: ${guild}`, iconURL: iconUrl })
                 .setTimestamp();
 
-            await channel.send({ embeds: [embed] });
+            await channel.send({ embeds: [embed], components: [row]});
             console.log('Elo Request was successfully submitted!');
             await interaction.editReply({ content: 'Successfully submitted elo role request! A moderator will review your request shortly. Thank you!', ephemeral: true });
         }

@@ -93,6 +93,7 @@ module.exports = {
                     components: [row],
                 });
 
+                // you must use a message collector to make sure the collector only collects stuff for its own interaction
                 const message = await interaction.fetchReply();
                 let filter;
                 const collector = message.createMessageComponentCollector({ filter, time: 60000 });

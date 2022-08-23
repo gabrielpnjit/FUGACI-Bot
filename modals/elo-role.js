@@ -7,7 +7,7 @@ module.exports = {
     async execute(interaction) {
         try {
             await interaction.deferReply({ ephemeral: true });
-            const channel = await interaction.client.channels.cache.get('1011445792629858395');
+            const channel = await interaction.client.channels.cache.get('1011764112893677618');
             const name = interaction.fields.getTextInputValue('eloName');
             const elo = interaction.fields.getTextInputValue('eloClaim');
             const image = interaction.fields.getTextInputValue('eloImage');

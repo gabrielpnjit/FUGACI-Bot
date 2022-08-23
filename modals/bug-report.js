@@ -8,7 +8,7 @@ module.exports = {
         try {
             await interaction.deferReply({ ephemeral: true });
             // const user = await interaction.client.users.fetch('186980117820473344');
-            const channel = await interaction.client.channels.cache.get('1009920873303638118');
+            const channel = await interaction.client.channels.cache.get('1011763238679101460');
             const title = interaction.fields.getTextInputValue('bugReportTitle');
             const body = interaction.fields.getTextInputValue('bugReportBody');
             const author = interaction.user.tag;

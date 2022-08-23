@@ -79,13 +79,12 @@ module.exports = {
             choicesString += `${reactions[i]} ${choices[i]}\n`;
         }
         const embed = new EmbedBuilder()
-        .setColor('#00FF00')
-        .setTitle('Poll')
+        .setColor('#228B22')
         .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1011768783846781078/2696242-200.png')
         .setAuthor({ name: `${author}`, iconURL: avatarUrl })
         .addFields(
-            { name: 'Poll Question', value: question },
-            { name: 'Choices', value: choicesString },
+            { name: 'Poll Question', value: `**${question}**` },
+            { name: 'Choices (You Can Vote for Multiple Choices)', value: choicesString },
         )
         .setTimestamp();
 

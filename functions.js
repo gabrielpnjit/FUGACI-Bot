@@ -51,9 +51,9 @@ async function getClanElo(id) {
             console.log('\x1b[31m', 'ERR: Probably API Rate Limit Reached');
         });
         if (errorFlag) {
-            if (Object.keys(prevResult).length != 0) {
+            if (prevResult[id] != null) {
                 console.log('\x1b[32m', 'SUCCESS: Returned most recent successful data');
-                return prevResult;
+                return prevResult[id];
             }
             else {
                 console.log('\x1b[33m', 'WARNING: No recent data was found/returned');
@@ -137,9 +137,9 @@ async function getClanElo(id) {
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {
                 console.log('\x1b[31m', `ERR: Obtaining data for ${failedIds[i]}`);
-                if (Object.keys(prevResult).length != 0) {
+                if (prevResult[id] != null) {
                     console.log('\x1b[32m', 'SUCCESS: Returned most recent successful data');
-                    return prevResult;
+                    return prevResult[id];
                 }
                 else {
                     return null;
@@ -150,11 +150,11 @@ async function getClanElo(id) {
             for (let i = 0; i < furls.length; i++) {
                 console.log('\x1b[0m', furls[i]);
             }
-            prevResult = sortedMemberElo;
+            prevResult[id] = sortedMemberElo;
         }
         else {
             console.log('\x1b[32m', 'SUCCESS: getClanElo Worked Perfectly!');
-            prevResult = sortedMemberElo;
+            prevResult[id] = sortedMemberElo;
         }
         return sortedMemberElo;
     }

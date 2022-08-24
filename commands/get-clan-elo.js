@@ -20,11 +20,24 @@ function getRow(currPage) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('leaderboard')
-        .setDescription('View ranked leaderboard of all FUGACI members by peak ELO!'),
+        .setDescription('View ranked leaderboard of all FUGACI members by peak ELO!')
+        .addStringOption(option =>
+            option.setName('clanid')
+                .setDescription('Enter clan ID of another specific clan!')
+                .setRequired(false)),
+
         async execute(interaction) {
             await interaction.deferReply();
             // FUGACI clan id = 682808
-            const res = await bhapi.getClanElo('682808');
+            const option = interaction.options.getString('clanid');
+            let res;
+            console.log(option);
+            if (option != null) {
+                res = await bhapi.getClanElo(option);
+            }
+            else {
+                res = await bhapi.getClanElo('682808');
+            }
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');
             const gold = interaction.client.emojis.cache.get('1004897801353838632');

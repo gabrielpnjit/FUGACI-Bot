@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const bhapi = require('../functions.js');
-const pages = [];
-function getRow(currPage) {
+function getRow(currPage, pagesArray) {
     const row = new ActionRowBuilder()
     .addComponents(
         new ButtonBuilder()
@@ -12,7 +11,7 @@ function getRow(currPage) {
         new ButtonBuilder()
             .setCustomId('next')
             .setLabel('Next')
-            .setDisabled(currPage == pages.length)
+            .setDisabled(currPage == pagesArray.length)
             .setStyle(ButtonStyle.Primary),
     );
     return row;
@@ -29,7 +28,7 @@ module.exports = {
         async execute(interaction) {
             await interaction.deferReply();
             // FUGACI clan id = 682808
-            const option = interaction.options.getString('clanid');
+            let option = interaction.options.getString('clanid');
             let res;
             console.log(option);
             if (option != null) {
@@ -38,6 +37,7 @@ module.exports = {
             else {
                 res = await bhapi.getClanElo('682808');
             }
+            const pages = [];
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');
             const gold = interaction.client.emojis.cache.get('1004897801353838632');
@@ -100,7 +100,7 @@ module.exports = {
                     ));
                 }
                 let currPage = 1;
-                let row = getRow(currPage);
+                let row = getRow(currPage, pages);
                 interaction.editReply({
                     embeds: [pages[0]],
                     components: [row],
@@ -122,14 +122,14 @@ module.exports = {
                         currPage++;
                         interaction.editReply({
                             embeds: [pages[currPage - 1]],
-                            components: [getRow(currPage)],
+                            components: [getRow(currPage, pages)],
                         });
                     }
                     else if (btnInt.customId === 'prev' && currPage > 1) {
                         currPage--;
                         interaction.editReply({
                             embeds: [pages[currPage - 1]],
-                            components: [getRow(currPage)],
+                            components: [getRow(currPage, pages)],
                         });
                     }
                     else {

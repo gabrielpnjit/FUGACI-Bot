@@ -10,21 +10,19 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
-                    .setCustomId('combos')
-                    .setPlaceholder('Nothing selected')
+                    .setCustomId('weapons')
+                    .setPlaceholder('Weapons')
                     .addOptions(
                         {
-                            label: 'Option 1',
-                            description: 'Description 1',
-                            value: 'Value 1',
+                            label: 'Sword',
+                            value: 'sword',
                         },
                         {
-                            label: 'Option 2',
-                            description: 'Description 2',
-                            value: 'Value 2',
+                            label: 'Spear',
+                            value: 'spear',
                         },
                     ),
             );
-        await interaction.editReply({ content: 'Menu:', components: [row] });
+        await interaction.editReply({ content: '**Select a weapon**:', components: [row] });
     },
 };

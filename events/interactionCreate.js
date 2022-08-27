@@ -1,4 +1,4 @@
-const { InteractionType } = require("discord.js");
+const { InteractionType, ActivityFlagsBitField } = require("discord.js");
 
 module.exports = {
     name: 'interactionCreate',
@@ -38,7 +38,22 @@ module.exports = {
                 console.error(error);
                 await interaction.reply({ content: 'There was an error while executing this modal!', ephemeral: true });
             }
-        } else {
+        }
+        else if (interaction.isSelectMenu()) {
+            const selectMenu = interaction.client.selectMenus.get(interaction.customId);
+            if (!selectMenu) {
+                console.log('select menu does not exist');
+                return;
+            }
+            try {
+                await selectMenu.execute(interaction);
+            }
+            catch (error) {
+                console.log(error);
+                await interaction.reply({ content: 'There was an error while executing this select menu!', ephemeral: true });
+            }
+        }
+        else {
             return;
         }
     },

@@ -48,6 +48,17 @@ for (const file of modalFiles) {
     client.modals.set(modal.data.name, modal);
 }
 
+// select menu handling stuff
+client.selectMenus = new Collection();
+const selectMenusPath = path.join(__dirname, 'select-menus');
+const selectMenuFiles = fs.readdirSync(selectMenusPath).filter(file => file.endsWith('.js'));
+
+for (const file of selectMenuFiles) {
+    const filePath = path.join(selectMenusPath, file);
+    const selectMenu = require(filePath);
+    client.selectMenus.set(selectMenu.data.name, selectMenu);
+}
+
 // event handling stuff
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));

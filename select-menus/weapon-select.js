@@ -7,43 +7,76 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferUpdate();
         const weapon = interaction.values[0];
-        if (weapon == 'sword') {
-            const row = new ActionRowBuilder()
-            .addComponents(
-                new SelectMenuBuilder()
+        switch (weapon) {
+            case 'hammer': {
+                const combos = [
+                    {
+                        'combo': 'dlight > jump > sair',
+                        'dex': '0',
+                        'hp': '0',
+                    },
+                    {
+                        'combo': 'dlight > jump > cd > recovery',
+                        'dex': '0',
+                        'hp': '0',
+                    },
+                    {
+                        'combo': 'dlight > slight',
+                        'dex': '0',
+                        'hp': '0',
+                    },
+                ];
+                const selectCombos = new SelectMenuBuilder()
                     .setCustomId('combos')
-                    .setPlaceholder('Sword True Combos')
-                    .addOptions(
+                    .setPlaceholder('Hammer Combos');
+                for (let i = 0; i < combos.length; i++) {
+                    selectCombos.addOptions(
                         {
-                            label: 'dlight > jump > sair',
-                            value: 'swordCombo1',
+                            label: combos[i].combo,
+                            value: `${JSON.stringify(combos[i])}`,
                         },
-                        {
-                            label: 'dlight > jump > recovery',
-                            value: 'swordCombo2',
-                        },
-                    ),
-            );
-            await interaction.editReply({ content: '**Select a combo:**', components: [row] });
-        }
-        else if (weapon == 'spear') {
-            const row = new ActionRowBuilder()
-            .addComponents(
-                new SelectMenuBuilder()
-                    .setCustomId('combos')
-                    .setPlaceholder('Spear True Combos')
-                    .addOptions(
-                        {
-                            label: 'sair > nlight',
-                            value: 'spearCombo1',
-                        },
-                        {
-                            label: 'dlight > jump > nair',
-                            value: 'spearCombo2',
-                        },
-                    ),
-            );
-            await interaction.editReply({ content: '**Select a combo:**', components: [row] });
+                    );
+                }
+                const row = new ActionRowBuilder().addComponents(selectCombos);
+                await interaction.editReply({ content: '**Select a combo:**', components: [row] });
+                break;
+            }
+            case 'sword':
+                console.log('picked sword');
+                break;
+            case 'blasters':
+                console.log('picked blasters');
+                break;
+            case 'lance':
+                console.log('picked lance');
+                break;
+            case 'spear':
+                console.log('picked spear');
+                break;
+            case 'katars':
+                console.log('picked katars');
+                break;
+            case 'axe':
+                console.log('picked axe');
+                break;
+            case 'bow':
+                console.log('picked bow');
+                break;
+            case 'gauntlets':
+                console.log('picked gauntlets');
+                break;
+            case 'scythe':
+                console.log('picked scythe');
+                break;
+            case 'cannon':
+                console.log('picked cannon');
+                break;
+            case 'orb':
+                console.log('picked orb');
+                break;
+            case 'greatsword':
+                console.log('picked greatsword');
+                break;
         }
     },
 };

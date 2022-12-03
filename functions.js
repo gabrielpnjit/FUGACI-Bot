@@ -19,6 +19,15 @@ function sort_object(obj) {
     return (sorted_obj);
 }
 
+// sort by attribute for array of json
+// https://stackoverflow.com/questions/21131224/sorting-json-object-based-on-attribute
+function sortByKeyAsc(array, key) {
+    return array.sort(function(a, b) {
+        let x = a[key]; let y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+    }
+
 // obtain id from url player search request url
 // https://api.brawlhalla.com/player/id/ranked?api_key=BHKEY
 // would return just 'id'
@@ -276,6 +285,7 @@ async function mockPrintClanElo() {
 module.exports = {
     getClanElo,
     mockGetClanElo,
+    sortByKeyAsc,
 };
 
 // this for loop is the slow version of the api request for all members, leaving it here in case

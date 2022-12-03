@@ -28,6 +28,11 @@ function idFromUrl(url) {
     return id;
 }
 
+// sleep function to use to limit requests from api
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 // return "dictionary" of all FUGACI member's (keys) elos (values) sorted from highest to lowest elo
 // members who have not played ranked yet this season have a value of -1
 // https://www.youtube.com/watch?v=xWRp1K8ga9s helped me out so much with this function
@@ -41,7 +46,7 @@ async function getClanElo(id) {
         const members = {};
         const memberElo = {};
         // this is where the yt video helped me
-        await axios.get(req)
+        await axios.get(req, {timeout: 30000})
         .then(result => {
             clan = result.data.clan;
         })
@@ -81,55 +86,104 @@ async function getClanElo(id) {
             urls.push(url);
         }
 
-        // obtain elo of each member in clan
-        await Promise.all(urls.map((url) => {
-            let id = idFromUrl(url);
-            return axios.get(url)
-            .then(result => {
-                // console.log(`got data for ${members[id]}`);
-                const peakElo = result.data.peak_rating;
-                if (peakElo != undefined) {
-                    memberElo[members[id]] = peakElo;
-                }
-                else {
-                    memberElo[members[id]] = -1;
-                }
-            })
-            .catch(error => {
-                // console.log(error);
-                failedIds.push(id);
-                // console.log(`Error getting data for: ${id} (probably timeout error)`);
-            });
-        }));
+        // determine number of batches to separate requests into to stay under api limit
+        const batchSize = 10;
+        let batchCount = 0;
+        if (urls.length % batchSize == 0) {
+            batchCount = urls.length / batchSize;
+        }
+        else {
+            batchCount = Math.floor(urls.length / batchSize) + 1;
+        }
 
+        // obtain elo of each member in clan
+        let start = 0;
+        let end = batchSize;
+        let batch = [];
+
+        for (let i = 0; i < batchCount; i++) {
+            await sleep(1200).then(async () => {
+                batch = urls.slice(start, end);
+                console.log(batch);
+                await Promise.all(batch.map((url) => {
+                    let id = idFromUrl(url);
+                    return axios.get(url, {timeout: 30000})
+                    .then(result => {
+                        // console.log(`got data for ${members[id]}`);
+                        const peakElo = result.data.peak_rating;
+                        if (peakElo != undefined) {
+                            memberElo[members[id]] = peakElo;
+                        }
+                        else {
+                            memberElo[members[id]] = -1;
+                        }
+                    })
+                    .catch(error => {
+                        // console.log(error);
+                        failedIds.push(id);
+                        // console.log(`Error getting data for: ${id} (probably timeout error)`);
+                    });
+                }));
+
+                start += batchSize;
+                end += batchSize;
+            });
+        }
+        console.log(`Failed ids: ${failedIds}`);
         // rerun through failed ids
-        furls = [];
+        let furls = [];
         if (failedIds != 0) {
+            // create array for failed urls
             for (let i = 0; i < failedIds.length; i++) {
                 let id = failedIds[i];
                 let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
                 furls.push(url);
             }
             failedIds = [];
-            await Promise.all(furls.map((url) => {
-                let id = idFromUrl(url);
-                return axios.get(url)
-                .then(result => {
-                    // console.log(`got data for 2nd run through for ${members[id]}`);
-                    const peakElo = result.data.peak_rating;
-                    if (peakElo != undefined) {
-                        memberElo[members[id]] = peakElo;
-                    }
-                    else {
-                        memberElo[members[id]] = -1;
-                    }
-                })
-                .catch(error => {
-                    // console.log(error);
-                    failedIds.push(id);
-                    // console.log(`Error getting data for: ${id} (ERROR)`);
+
+            // determine number of batches to separate requests into to stay under api limit
+            // made it a safer batch size and delay for the reran requests
+            const fBatchSize = 5;
+            let fBatchCount = 0;
+            if (furls.length % fBatchSize == 0) {
+                fBatchCount = furls.length / fBatchSize;
+            }
+            else {
+                fBatchCount = Math.floor(furls.length / fBatchSize) + 1;
+            }
+
+            // obtain elo of for failed request members
+            start = 0;
+            end = fBatchSize;
+            batch = [];
+            for (let i = 0; i < fBatchCount; i++) {
+                await sleep(2000).then(async () => {
+                    batch = furls.slice(start, end);
+                    console.log(batch);
+                    await Promise.all(batch.map((url) => {
+                        let id = idFromUrl(url);
+                        return axios.get(url, {timeout: 30000})
+                        .then(result => {
+                            // console.log(`got data for ${members[id]}`);
+                            const peakElo = result.data.peak_rating;
+                            if (peakElo != undefined) {
+                                memberElo[members[id]] = peakElo;
+                            }
+                            else {
+                                memberElo[members[id]] = -1;
+                            }
+                        })
+                        .catch(error => {
+                            // console.log(error);
+                            failedIds.push(id);
+                            // console.log(`Error getting data for: ${id} (probably timeout error)`);
+                        });
+                    }));
+
+                    start += fBatchSize;
+                    end += fBatchSize;
                 });
-            }));
+            }
         }
         let sortedMemberElo = sort_object(memberElo);
 

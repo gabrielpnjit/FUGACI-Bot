@@ -55,7 +55,7 @@ module.exports = {
             .setURL(`https://corehalla.com/stats/player/${userId}`)
             .setThumbnail('https://static.wikia.nocookie.net/brawlhalla_gamepedia/images/4/46/Banner_Rank_Diamond.png/revision/latest?cb=20161110140154')
             .setColor('#5A32B2 ')
-            .setDescription(`${diam} **${tier}**: ${currElo} / ${peakElo} (${wins} W / ${losses} L)\n${hattoriPlaceHolder} **Best Legend**: ${bestLegendName} ${bestLegendCurrRating} / ${bestLegendPeakRating}\n:flag_us: **${region}**: ${regionRank}  :earth_americas: **Global**: ${globalRank}`);
+            .setDescription(`${diam} **${tier}**: ${currElo} / ${peakElo} (${wins} W - ${losses} L)\n${hattoriPlaceHolder} **Best Legend**: ${bestLegendName} ${bestLegendCurrRating} / ${bestLegendPeakRating}\n:flag_us: **${region}**: ${regionRank}  :earth_americas: **Global**: ${globalRank}`);
 
             await interaction.editReply({ embeds: [embed] });
         })

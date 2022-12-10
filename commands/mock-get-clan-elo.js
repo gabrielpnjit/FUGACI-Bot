@@ -24,8 +24,7 @@ module.exports = {
     async execute(interaction) {
         try {
             await interaction.deferReply();
-
-            const res = await bhapi.mockGetClanElo();
+            const res = await bhapi.mockGetClanMembers();
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');
             const gold = interaction.client.emojis.cache.get('1004897801353838632');
@@ -39,20 +38,38 @@ module.exports = {
                 let elos = '';
                 let count = 1;
                 let rank;
-                for (let member in res) {
-                    let elo = res[member];
+                let sum = 0;
+                let memberCount = 0;
+                let totalWins = 0;
+                let totalLosses = 0;
+
+                for (let i in res) {
+                    let member = res[i];
+                    let elo = member.peak_rating;
                     if (elo >= 2000) {
                         rank = diam;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     }
                     else if (elo >= 1680) {
                         rank = plat;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     }
                     else if (elo >= 1390) {
                         rank = gold;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     } else {
                         rank = tin;
                     }
-                    let str = `${rank} ${count}. ${member} \n`;
+                    let str = `${rank} ${count}. ${member.name} \n`;
                     let temp = members;
                     temp += str;
                     if (temp.length > 1024) {
@@ -64,13 +81,17 @@ module.exports = {
                     }
                     members += str;
                     if (elo != -1) {
-                        elos += res[member] + '\n';
+                        elos += member.peak_rating + '\n';
                         count++;
                     }
                     else {
                         elos += 'N/A \n';
                     }
                 }
+                const averageElo = Math.round(sum / memberCount);
+                console.log(averageElo);
+                console.log(totalWins);
+                console.log(totalLosses);
                 pagesMembers.push(members);
                 pagesElos.push(elos);
                 for (let i = 0; i < pagesMembers.length; i++) {
@@ -81,6 +102,7 @@ module.exports = {
                     .setTimestamp(Date.now())
                     .setURL('http://corehalla.com/stats/clan/682808')
                     .setFooter({ text: `Page ${i + 1} of ${pagesMembers.length}` })
+                    .setDescription(`**W/L:** ${totalWins}/${totalLosses} • **Average Elo:** ${averageElo}`)
                     .addFields(
                         { name: 'Member', value: pagesMembers[i], inline: true },
                         { name: 'Elo', value: pagesElos[i], inline: true },

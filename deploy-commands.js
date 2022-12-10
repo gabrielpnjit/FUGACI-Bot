@@ -20,6 +20,12 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
-rest.put(Routes.applicationGuildCommands(CLIENTID, GUILDID), { body: commands })
+// register guild commands
+// rest.put(Routes.applicationGuildCommands(CLIENTID, GUILDID), { body: commands })
+// 	.then(() => console.log('Successfully registered guild commands.'))
+// 	.catch(console.error);
+
+// register global commands
+rest.put(Routes.applicationCommands(CLIENTID, GUILDID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);

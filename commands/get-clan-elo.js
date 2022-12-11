@@ -32,10 +32,10 @@ module.exports = {
             let res;
             console.log(option);
             if (option != null) {
-                res = await bhapi.getClanElo(option);
+                res = await bhapi.getClanMembers(option);
             }
             else {
-                res = await bhapi.getClanElo('682808');
+                res = await bhapi.getClanMembers('682808');
             }
             const pages = [];
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
@@ -46,26 +46,46 @@ module.exports = {
             if (res) {
                 let pagesMembers = [];
                 let pagesElos = [];
+                let pageCount = 0;
                 let members = '';
                 let elos = '';
                 let count = 1;
                 let rank;
+                let sum = 0;
+                let memberCount = 0;
+                let totalWins = 0;
+                let totalLosses = 0;
+                const clanName = res[0];
+                res = res[1];
                 // these two strings, members and elos are passed into
                 // two seprate fields in the embedbuilder as values
-                for (let member in res) {
-                    let elo = res[member];
+                for (let i in res) {
+                    let member = res[i];
+                    let elo = member.peak_rating;
                     if (elo >= 2000) {
                         rank = diam;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     }
                     else if (elo >= 1680) {
                         rank = plat;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     }
                     else if (elo >= 1390) {
                         rank = gold;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
                     } else {
                         rank = tin;
                     }
-                    let str = `${rank} ${count}. ${member} \n`;
+                    let str = `${rank} ${count}. ${member.name} \n`;
                     let temp = members;
                     temp += str;
                     if (temp.length > 1024) {
@@ -76,23 +96,25 @@ module.exports = {
                     }
                     members += str;
                     if (elo != -1) {
-                        elos += res[member] + '\n';
+                        elos += elo + '\n';
                         count++;
                     }
                     else {
                         elos += 'N/A \n';
                     }
                 }
+                const averageElo = Math.round(sum / memberCount);
                 pagesMembers.push(members);
                 pagesElos.push(elos);
                 for (let i = 0; i < pagesMembers.length; i++) {
                     pages.push(new EmbedBuilder()
-                    .setTitle('FUGACI 1v1 Ranked Leaderboard')
+                    .setTitle(`${clanName} 1v1 Ranked Leaderboard`)
                     .setColor(0x18e1ee)
                     .setThumbnail('https://cdn.discordapp.com/attachments/689908352079495221/1007780011211767878/fugaci-removebg-preview1.png')
                     .setTimestamp(Date.now())
-                    .setURL('http://corehalla.com/stats/clan/682808')
+                    .setURL(`http://corehalla.com/stats/clan/${option}`)
                     .setFooter({ text: `Page ${i + 1} of ${pagesMembers.length}` })
+                    .setDescription(`**W/L:** ${totalWins}/${totalLosses} • **Average Elo:** ${averageElo}`)
                     .addFields(
                         { name: 'Member', value: pagesMembers[i], inline: true },
                         { name: 'Elo', value: pagesElos[i], inline: true },

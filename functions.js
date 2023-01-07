@@ -328,7 +328,7 @@ async function getClanMembers(id) {
             members['45923794'] = 'Jaboogle5274';
             members['47021368'] = 'Mokoffee(Mobile Acc)';
             members['20661966'] = 'KrY Optics';
-            members['11333466'] = 'BicBoi3';
+            members['29471488'] = 'DarkIngram678';
         }
 
         // create dictionary of member's names as keys and their current peak elo as values

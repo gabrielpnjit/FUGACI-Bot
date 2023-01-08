@@ -18,10 +18,10 @@ module.exports = {
     name: 'guildMemberAdd',
     execute(member) {
         const { user, guild } = member;
-        const welcomeChannel = member.guild.channels.cache.get('756654864280453134');
-        const rulesChannel = member.guild.channels.cache.get('1061369986884583446').toString();
-        const tryoutsChannel = member.guild.channels.cache.get('1061370040408096822').toString();
-        const rolesChannel = member.guild.channels.cache.get('1061370081491292310').toString();
+        const welcomeChannel = member.guild.channels.cache.get('990457831843070065');
+        const rulesChannel = member.guild.channels.cache.get('990462977595547648').toString();
+        const tryoutsChannel = member.guild.channels.cache.get('990460580664049664').toString();
+        const rolesChannel = member.guild.channels.cache.get('990467417052430366').toString();
 
         const welcomeEmbed = new EmbedBuilder()
         .setTitle(`Welcome to FUGACI!`)

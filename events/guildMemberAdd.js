@@ -13,11 +13,10 @@ module.exports = {
         .setTitle(`Welcome to FUGACI!`)
         .setAuthor({ name: `${user.tag}`, iconURL: `${user.displayAvatarURL()}` })
         .setDescription(`╔════════════╗\nMake sure to check out:\n${rulesChannel}\n${tryoutsChannel}\n${rolesChannel}\n╚════════════╝`)
-        // .addFields(
-        //     { name: 'Total Members', value: `${guild.memberCount}`, inline: true },
-        // )
-        .setColor('#228C22')
-        .setThumbnail(`https://cdn.discordapp.com/attachments/689908352079495221/1061365775492976741/EMBER_Fangwilds_Heart_Ember_Classic_Colors_Emote_See_Ya_5_242x350.png`)
+        .setColor('#5FA052')
+        // .setFooter({ text: `Member #${guild.memberCount}` })
+        .setTimestamp()
+        .setThumbnail('https://cdn.discordapp.com/attachments/689908352079495221/1061365775492976741/EMBER_Fangwilds_Heart_Ember_Classic_Colors_Emote_See_Ya_5_242x350.png');
         welcomeChannel.send({
             content: `Hello ${member}!`,
             embeds: [welcomeEmbed],

@@ -98,11 +98,11 @@ async function getClanElo(id) {
         // temporarily hardcode console/mobile players
         if (id == '682808') {
             members['45923794'] = 'Jaboogle5274';
-            members['47021368'] = 'Mokoffee(Mobile Acc)';
             members['20661966'] = 'KrY Optics';
             members['29471488'] = 'DarkIngram678';
-            members['51183832'] = 'Majiama';
             members['17438506'] = 'Ghheko';
+            members['51183832'] = 'Majiama';
+            members['47021368'] = 'Mokoffee(Mobile Acc)';
         }
 
         // create dictionary of member's names as keys and their current peak elo as values
@@ -331,6 +331,8 @@ async function getClanMembers(id) {
             members['47021368'] = 'Mokoffee(Mobile Acc)';
             members['20661966'] = 'KrY Optics';
             members['29471488'] = 'DarkIngram678';
+            members['17438506'] = 'Ghheko';
+            members['51183832'] = 'Majiama';
         }
 
         // create dictionary of member's names as keys and their current peak elo as values

@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'guildMemberAdd',
     execute(member) {
-        const {user, guild} = member;
+        const { user, guild } = member;
         const welcomeChannel = member.guild.channels.cache.get('756654864280453134');
         const rulesChannel = member.guild.channels.cache.get('1061369986884583446').toString();
         const tryoutsChannel = member.guild.channels.cache.get('1061370040408096822').toString();

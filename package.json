@@ -1,18 +1,17 @@
 {
   "dependencies": {
-    "@discordjs/rest": "^1.0.1",
     "axios": "^0.27.2",
-    "discord.js": "^14.0.3",
+    "discord.js": "^14.11.0",
     "dotenv": "^16.0.1"
   },
   "name": "brawlhalla-fugaci-bot",
   "version": "1.0.0",
-  "main": "fugacibot.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Gabriel Pascual",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "eslint": "^8.20.0"

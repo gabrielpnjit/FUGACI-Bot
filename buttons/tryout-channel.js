@@ -42,7 +42,7 @@ module.exports = {
                 const row = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                        .setCustomId('deleteTryoutchannel')
+                        .setCustomId('deleteTryoutChannel')
                         .setLabel('Delete Channel')
                         .setStyle(ButtonStyle.Danger),
                 );

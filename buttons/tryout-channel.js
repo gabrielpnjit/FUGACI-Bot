@@ -37,7 +37,7 @@ module.exports = {
                 .setTitle('Tryout Channel - ' + memberTag)
                 .setColor('#FF5F1F')
                 // .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1011768783846781078/2696242-200.png')
-                .setDescription('> This channel is for discussing anything related to tryouts including BO5 scheduling and any questions or concerns!')
+                .setDescription('**Thank you for trying out!**\n> This channel is for discussing anything related to tryouts including BO5 scheduling and any questions or concerns!')
 
                 const row = new ActionRowBuilder()
                 .addComponents(

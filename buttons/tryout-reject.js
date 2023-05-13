@@ -4,9 +4,9 @@ module.exports = {
     },
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
-        const ownerRole = interaction.message.guild.roles.cache.find(role => role.name === 'Clan Owner');
-        const coOwnerRole = interaction.message.guild.roles.cache.find(role => role.name === 'Clan Co-Owner');
-        const officerRole = interaction.message.guild.roles.cache.find(role => role.name === 'Officer');
+        const ownerRole = await interaction.message.guild.roles.cache.find(role => role.name === 'Clan Owner');
+        const coOwnerRole = await interaction.message.guild.roles.cache.find(role => role.name === 'Clan Co-Owner');
+        const officerRole = await interaction.message.guild.roles.cache.find(role => role.name === 'Officer');
 
         // Allow only officers, owners, and coowners to run these buttons
         if (!(interaction.member.roles.cache.has(ownerRole.id) || interaction.member.roles.cache.has(coOwnerRole.id) || interaction.member.roles.cache.has(officerRole.id))) {

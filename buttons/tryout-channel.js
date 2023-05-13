@@ -1,4 +1,4 @@
-const { ChannelType } = require('discord.js');
+const { ChannelType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     data: {
@@ -31,14 +31,29 @@ module.exports = {
             type: ChannelType.GuildText,
             parent: category.id,
         })
-            .then(channel => {
-                interaction.editReply('Created new channel!');
+            .then(async channel => {
+                // Create embed that includes delete channel button
+                const embed = new EmbedBuilder()
+                .setTitle('Tryout Channel - ' + memberTag)
+                .setColor('#FF5F1F')
+                // .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1011768783846781078/2696242-200.png')
+                .setDescription('> This channel is for discussing anything related to tryouts including BO5 scheduling and any questions or concerns!')
+
+                const row = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('deleteTryoutchannel')
+                        .setLabel('Delete Channel')
+                        .setStyle(ButtonStyle.Danger),
+                );
+
+                await channel.send({ embeds: [embed], components: [row]});
+                await interaction.editReply('Successfully created tryout channel for ' + memberTag + '!');
             })
-            .catch(error => {
+            .catch(async error => {
                 console.error(error);
-                interaction.editReply('Failed to create tryout channel');
+                await interaction.editReply('Failed to create tryout channel');
 
             });
-        await interaction.editReply({ content: 'Created Channel Successfully!', ephemeral: true });
     },
 };

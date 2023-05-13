@@ -1,3 +1,5 @@
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
     data: {
         name: 'tryoutReject',
@@ -14,11 +16,21 @@ module.exports = {
             return;
         }
 
+        const rejectRow = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('eloReject')
+                .setLabel('Rejected')
+                .setDisabled(true)
+                .setStyle(ButtonStyle.Danger),
+        );
+
         const reply = await interaction.fetchReply();
         const id = reply.reference.messageId;
         const message = await interaction.message.fetch(`${id}`);
         const userId = message.embeds[0].data.footer.text.slice(9);
 
+        await message.edit({ components: [rejectRow] });
         await interaction.client.users.send(userId, 'Your tryout for FUGACI has been rejected.');
         await interaction.editReply({ content: 'Rejected Successfully!', ephemeral: true });
     },

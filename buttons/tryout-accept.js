@@ -1,3 +1,5 @@
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
     data: {
         name: 'tryoutAccept',
@@ -15,6 +17,15 @@ module.exports = {
             return;
         }
 
+        const acceptRow = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('tryoutAccepted')
+                .setLabel('Accepted')
+                .setDisabled(true)
+                .setStyle(ButtonStyle.Success),
+        );
+
         const reply = await interaction.fetchReply();
         const id = reply.reference.messageId;
         const message = await interaction.message.fetch(`${id}`);
@@ -22,6 +33,7 @@ module.exports = {
         const member = await interaction.message.guild.members.fetch(userId);
 
         await member.roles.add(memberRole);
+        await message.edit({ components: [acceptRow] });
         await interaction.client.users.send(userId, 'Your tryout for FUGACI has been accepted!');
         await interaction.editReply({ content: 'Accepted Successfully!', ephemeral: true });
     },

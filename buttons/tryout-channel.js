@@ -1,4 +1,4 @@
-const { ChannelType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ChannelType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
 
 module.exports = {
     data: {
@@ -30,6 +30,32 @@ module.exports = {
             name: channelName,
             type: ChannelType.GuildText,
             parent: category.id,
+            permissionOverwrites: [
+                {
+                    id: interaction.guild.id,
+                    deny: [PermissionsBitField.Flags.ViewChannel],
+                },
+                {
+                    id: ownerRole.id,
+                    allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                },
+                {
+                    id: coOwnerRole.id,
+                    allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                },
+                {
+                    id: officerRole.id,
+                    allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                },
+                {
+                    id: memberRole.id,
+                    allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                },
+                {
+                    id: userId,
+                    allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                },
+            ],
         })
             .then(async channel => {
                 // Create embed that includes delete channel button

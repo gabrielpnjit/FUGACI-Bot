@@ -22,7 +22,7 @@ module.exports = {
         const userId = message.embeds[0].data.footer.text.slice(9);
         const member = await interaction.message.guild.members.fetch(userId);
         const memberTag = interaction.message.embeds[0].data.author.name;
-        const categoryId = '1107033818956845097';
+        const categoryId = '1107188012481265714';
         const category = await interaction.message.guild.channels.cache.get(categoryId);
         const channelName = 'Tryouts ' + memberTag;
 

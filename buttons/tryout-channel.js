@@ -26,6 +26,12 @@ module.exports = {
         const category = await interaction.message.guild.channels.cache.get(categoryId);
         const channelName = 'Tryouts ' + memberTag;
 
+        const tryoutIgn = message.embeds[0].data.fields[0].value;
+        const tryoutElo = message.embeds[0].data.fields[1].value;
+        const tryoutHours = message.embeds[0].data.fields[3].value;
+        const tryoutRegion = message.embeds[0].data.fields[4].value;
+        const tryoutMain = message.embeds[0].data.fields[6].value;
+
         await interaction.message.guild.channels.create({
             name: channelName,
             type: ChannelType.GuildText,
@@ -64,6 +70,14 @@ module.exports = {
                 .setColor('#FF5F1F')
                 // .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1011768783846781078/2696242-200.png')
                 .setDescription('**Thank you for trying out!**\n> This channel is for discussing anything related to tryouts including BO5 scheduling and any questions or concerns!')
+                .addFields(
+                    { name: 'IGN:', value: tryoutIgn, inline: true },
+                    { name: 'Peak ELO:', value: tryoutElo, inline: true },
+                    { name: 'Playtime (Hours):', value: tryoutHours, inline: true },
+                    { name: 'Region:', value: tryoutRegion, inline: true },
+                    { name: 'Main Legend:', value: tryoutMain, inline: true },
+                    { name: '\u200B', value: '\u200B', inline: true },
+                );
 
                 const row = new ActionRowBuilder()
                 .addComponents(

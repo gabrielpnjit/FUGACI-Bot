@@ -38,18 +38,18 @@ module.exports = {
             .setMaxLength(8)
             .setStyle(TextInputStyle.Short)
             .setRequired(true);
-        const dateInput = new TextInputBuilder()
-            .setCustomId('tryoutDate')
-            .setLabel('What date(s) and time(s) can you tryout?')
-            .setMaxLength(32)
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
-        const bodyInput = new TextInputBuilder()
-            .setCustomId('tryoutReason')
-            .setLabel('Why would you like to tryout for FUGACI?')
-            .setMaxLength(1000)
-            .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true);
+        // const dateInput = new TextInputBuilder()
+        //     .setCustomId('tryoutDate')
+        //     .setLabel('What date(s) and time(s) can you tryout?')
+        //     .setMaxLength(32)
+        //     .setStyle(TextInputStyle.Short)
+        //     .setRequired(true);
+        // const bodyInput = new TextInputBuilder()
+        //     .setCustomId('tryoutReason')
+        //     .setLabel('Why would you like to tryout for FUGACI?')
+        //     .setMaxLength(1000)
+        //     .setStyle(TextInputStyle.Paragraph)
+        //     .setRequired(true);
         const firstActionRow = new ActionRowBuilder().addComponents(nameInput);
         const secondActionRow = new ActionRowBuilder().addComponents(eloInput);
         const thirdActionRow = new ActionRowBuilder().addComponents(regionInput);

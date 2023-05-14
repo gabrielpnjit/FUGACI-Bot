@@ -13,7 +13,8 @@ module.exports = {
             const tryoutElo = interaction.fields.getTextInputValue('tryoutElo');
             const tryoutHours = interaction.fields.getTextInputValue('tryoutHours');
             const tryoutMain = interaction.fields.getTextInputValue('tryoutMain');
-            const tryoutReason = interaction.fields.getTextInputValue('tryoutReason');
+            // const tryoutReason = interaction.fields.getTextInputValue('tryoutReason');
+            const tryoutRegion = interaction.fields.getTextInputValue('tryoutRegion');
             const author = interaction.user.tag;
             const avatarUrl = interaction.user.displayAvatarURL();
             // const guild = interaction.guild;
@@ -29,9 +30,9 @@ module.exports = {
                     { name: 'Peak ELO:', value: tryoutElo, inline: true },
                     { name: '\u200B', value: '\u200B', inline: true },
                     { name: 'Playtime (Hours):', value: tryoutHours, inline: true },
-                    { name: 'Main Legend:', value: tryoutMain, inline: true },
+                    { name: 'Region:', value: tryoutRegion, inline: true },
                     { name: '\u200B', value: '\u200B', inline: true },
-                    { name: 'Tryout Reason:', value: tryoutReason },
+                    { name: 'Main Legend:', value: tryoutMain },
                 )
                 .setFooter({ text: `User ID: ${userId}` })
                 .setTimestamp();

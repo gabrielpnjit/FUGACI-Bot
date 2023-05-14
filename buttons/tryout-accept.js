@@ -34,7 +34,7 @@ module.exports = {
 
         await member.roles.add(memberRole);
         await message.edit({ components: [acceptRow] });
-        await interaction.client.users.send(userId, 'Your tryout for FUGACI has been accepted!');
+        await interaction.client.users.send(userId, 'You made it into FUGACI! Congratulations! We hope you enjoy it here!');
         await interaction.editReply({ content: 'Accepted Successfully!', ephemeral: true });
     },
 };

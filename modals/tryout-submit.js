@@ -7,7 +7,7 @@ module.exports = {
     async execute(interaction) {
         try {
             await interaction.deferReply({ ephemeral: true });
-            const channel = await interaction.client.channels.cache.get('1061370040408096822');
+            const channel = await interaction.client.channels.cache.get('1107187526923456553');
             const userId = interaction.user.id;
             const tryoutIgn = interaction.fields.getTextInputValue('tryoutIgn');
             const tryoutElo = interaction.fields.getTextInputValue('tryoutElo');

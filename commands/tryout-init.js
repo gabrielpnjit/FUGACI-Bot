@@ -4,9 +4,15 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('tryoutinit')
         .setDescription('Check if bot is alive')
+        .addStringOption(option =>
+            option.setName('channelid')
+                .setDescription('Enter Channel ID to send tryout message to')
+                .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
+        const channelId = await interaction.options.getString('channelid');
+        const channel = await interaction.client.channels.cache.get(channelId);
 
         const embed = new EmbedBuilder()
         .setTitle('FUGACI Clan Tryouts')
@@ -27,6 +33,7 @@ module.exports = {
                 .setStyle(ButtonStyle.Success),
         );
 
-        await interaction.editReply({ embeds: [embed], components: [row] });
+        await channel.send({ embeds: [embed], components: [row] });
+        await interaction.editReply('Tryout message sent!');
     },
 };

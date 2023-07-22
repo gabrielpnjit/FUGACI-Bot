@@ -20,7 +20,7 @@ module.exports = {
         const { user, guild } = member;
         const welcomeChannel = member.guild.channels.cache.get('990457831843070065');
         const rulesChannel = member.guild.channels.cache.get('990462977595547648').toString();
-        const tryoutsChannel = member.guild.channels.cache.get('990460580664049664').toString();
+        const tryoutsChannel = member.guild.channels.cache.get('1107191813342773340').toString();
         const rolesChannel = member.guild.channels.cache.get('990467417052430366').toString();
 
         const welcomeEmbed = new EmbedBuilder()

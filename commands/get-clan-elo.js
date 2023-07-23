@@ -110,7 +110,7 @@ module.exports = {
                 for (let i = 0; i < pagesMembers.length; i++) {
                     pages.push(new EmbedBuilder()
                     .setTitle(`${clanName} 1v1 Ranked Leaderboard`)
-                    .setColor('#FF5F1F')
+                    .setColor('#E78230')
                     .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
                     .setTimestamp(Date.now())
                     .setURL(`http://corehalla.com/stats/clan/${option}`)

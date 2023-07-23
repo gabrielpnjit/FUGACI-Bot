@@ -16,7 +16,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
         .setTitle('FUGACI Clan Tryouts')
-        .setColor('#FF5F1F')
+        .setColor('#E78230')
         .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
         .addFields(
             { name: '<:FUGACI_2:1132465986390474762> Requirements', value: '> • 2200+ Peak ELO\n> • 500+ in-game Brawlhalla hours\n> • US-E or US-W\n> • Active and Non-toxic' },

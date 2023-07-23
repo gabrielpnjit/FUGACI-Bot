@@ -35,6 +35,7 @@ module.exports = {
                 res = await bhapi.getClanMembers(option);
             }
             else {
+                option = '682808';
                 res = await bhapi.getClanMembers('682808');
             }
             const pages = [];
@@ -109,8 +110,8 @@ module.exports = {
                 for (let i = 0; i < pagesMembers.length; i++) {
                     pages.push(new EmbedBuilder()
                     .setTitle(`${clanName} 1v1 Ranked Leaderboard`)
-                    .setColor(0x18e1ee)
-                    .setThumbnail('https://cdn.discordapp.com/attachments/689908352079495221/1007780011211767878/fugaci-removebg-preview1.png')
+                    .setColor('#FF5F1F')
+                    .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
                     .setTimestamp(Date.now())
                     .setURL(`http://corehalla.com/stats/clan/${option}`)
                     .setFooter({ text: `Page ${i + 1} of ${pagesMembers.length}` })

@@ -13,7 +13,7 @@ const client = new Client({
         GatewayIntentBits.GuildEmojisAndStickers,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildModeration,
     ],
 });
 

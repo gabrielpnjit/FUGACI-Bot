@@ -4,7 +4,7 @@ module.exports = {
     name: 'guildBanAdd',
     execute(ban) {
         const { user } = ban;
-        const welcomeChannel = ban.guild.channels.cache.get('756654864280453134');
+        const welcomeChannel = ban.guild.channels.cache.get('990457831843070065');
 
         const welcomeEmbed = new EmbedBuilder()
         .setTitle(`${ban.user}! has been banned from FUGACI!`)

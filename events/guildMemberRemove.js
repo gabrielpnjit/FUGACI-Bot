@@ -4,7 +4,7 @@ module.exports = {
     name: 'guildMemberRemove',
     execute(member) {
         const { user } = member;
-        const welcomeChannel = member.guild.channels.cache.get('756654864280453134');
+        const welcomeChannel = member.guild.channels.cache.get('990457831843070065');
 
         const welcomeEmbed = new EmbedBuilder()
         .setTitle('Farewell from FUGACI!')

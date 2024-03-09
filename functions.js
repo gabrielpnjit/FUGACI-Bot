@@ -1350,11 +1350,29 @@ async function mockPrintClanElo() {
     console.log(res);
 }
 
+// update Clan data in clans.json file
+
+async function updateClanData(clanID) {
+    const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
+    clanData = {}
+    await axios.get(req, {timeout: 30000})
+    .then(result => {
+        clanData = result.data.clan;
+        console.log(clanData)
+    })
+    .catch(error => {
+        console.log(error);
+        errorFlag = true;
+        console.log('\x1b[31m', 'ERR: Probably API Rate Limit Reached');
+    });
+}
+
 module.exports = {
     getClanElo,
     mockGetClanElo,
     getClanMembers,
     mockGetClanMembers,
+    updateClanData,
 };
 
 // this for loop is the slow version of the api request for all members, leaving it here in case

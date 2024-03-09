@@ -1,5 +1,6 @@
 // using discord js v14! most current tutorials are v13 so be wary
 require('dotenv').config();
+const { updateClanData } = require('./functions.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const TOKEN = process.env.DISC_TOKEN;
@@ -79,5 +80,8 @@ process.on('uncaughtExceptionMonitor', async (err) => {
 //     console.error('Multiple Resolves:\n', type, promise, reason);
 //   });
 
+// interval testing
+
+setInterval(() => updateClanData(682808), 10000);
 // login/start bot
 client.login(TOKEN);

@@ -1350,14 +1350,22 @@ async function mockPrintClanElo() {
     console.log(res);
 }
 
-// update Clan data in clans.json file
-
-async function updateClanData(clanID) {
+// update Clan data in clans.json file and sends message when there is a difference
+async function updateClanData(clanID, client, channelID) {
     const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
+    const channel = client.channels.cache.get(channelID)
+    if (!channel) {
+      console.warn(`Channel not found!: ${channel}`);
+      return;
+    }
+
     clanData = {}
     await axios.get(req, {timeout: 30000})
     .then(result => {
         clanData = result.data.clan;
+        channel.send(`Member Count: ${clanData.length}`)
+          .then(message => console.log(`Sent message: ${message}`))
+          .catch(err => console.error(`Error: ${err}`));
         console.log(clanData)
     })
     .catch(error => {

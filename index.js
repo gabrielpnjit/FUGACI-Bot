@@ -81,7 +81,7 @@ process.on('uncaughtExceptionMonitor', async (err) => {
 //   });
 
 // interval testing
+setInterval(() => updateClanData(682808, client, '756654864280453134'), 5000);
 
-setInterval(() => updateClanData(682808), 10000);
 // login/start bot
 client.login(TOKEN);

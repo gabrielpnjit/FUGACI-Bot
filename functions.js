@@ -1,6 +1,7 @@
 require('dotenv').config();
 const BHKEY = process.env.BH_KEY;
 const axios = require('axios');
+const fs = require('fs');
 // courtesty of https://stackoverflow.com/questions/25500316/sort-a-dictionary-by-value-in-javascript
 // sort object and return same object type
 function sort_object(obj) {
@@ -1353,26 +1354,81 @@ async function mockPrintClanElo() {
 // update Clan data in clans.json file and sends message when there is a difference
 async function updateClanData(clanID, client, channelID) {
     const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
-    const channel = client.channels.cache.get(channelID)
+    const channel = await client.channels.fetch(channelID)
     if (!channel) {
-      console.warn(`Channel not found!: ${channel}`);
-      return;
+        console.warn(`Channel not found!: ${channel}`);
+        return;
     }
 
-    clanData = {}
+    oldClanData = {}
+    await fs.readFile('clan-logs.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log('Error reading clan-logs.json:', err)
+            return;
+        }
+        try {
+            oldClanData = JSON.parse(jsonString)
+        } catch (err) {
+            console.log('Error parsing JSON string:', err);
+        }
+    });
+
+    newClanData = {}
     await axios.get(req, {timeout: 30000})
-    .then(result => {
-        clanData = result.data.clan;
-        channel.send(`Member Count: ${clanData.length}`)
-          .then(message => console.log(`Sent message: ${message}`))
-          .catch(err => console.error(`Error: ${err}`));
-        console.log(clanData)
+    .then(async result => {
+        newClanData = result.data;
+
+        // Temp Testing
+        await fs.readFile('clan-logs-test-2.json', 'utf8', (err, jsonString) => {
+            if (err) {
+                console.log('Error reading clan-logs.json:', err)
+                return;
+            }
+            try {
+                newClanData = JSON.parse(jsonString)
+            } catch (err) {
+                console.log('Error parsing JSON string:', err);
+            }
+        });
+
+        await fs.readFile('clan-logs-test-1.json', 'utf8', (err, jsonString) => {
+            if (err) {
+                console.log('Error reading clan-logs.json:', err)
+                return;
+            }
+            try {
+                oldClanData = JSON.parse(jsonString)
+            } catch (err) {
+                console.log('Error parsing JSON string:', err);
+            }
+        });
+        console.log(`Old Array: ${JSON.stringify(oldClanData.clan)}`)
+        console.log(`New Array: ${JSON.stringify(newClanData.clan)}`)
+
+        let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
+        let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
+        console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
+        console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
+        
+        fs.writeFile('clan-logs.json', JSON.stringify(newClanData, null, 4), (err) => {
+            if (err) throw err;
+            console.log('clan-logs.json updated successfully')
+        });
+        channel.send(`Member Leaves: ${leavesArr}, Member Joins: ${joinsArr}`)
+            .then(message => console.log(`Sent message: ${message}`))
+            .catch(err => console.error(`Error: ${err}`));
     })
     .catch(error => {
         console.log(error);
         errorFlag = true;
         console.log('\x1b[31m', 'ERR: Probably API Rate Limit Reached');
     });
+}
+
+async function arrayDifference(arr1, arr2) {
+    const difference = arr1.filter(obj1 => 
+        !arr2.some(obj2 => obj2.brawlhalla_id === obj1.brawlhalla_id));
+    return difference;
 }
 
 module.exports = {

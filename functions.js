@@ -1360,50 +1360,12 @@ async function updateClanData(clanID, client, channelID) {
         return;
     }
 
-    oldClanData = {}
-    await fs.readFile('clan-logs.json', 'utf8', (err, jsonString) => {
-        if (err) {
-            console.log('Error reading clan-logs.json:', err)
-            return;
-        }
-        try {
-            oldClanData = JSON.parse(jsonString)
-        } catch (err) {
-            console.log('Error parsing JSON string:', err);
-        }
-    });
+    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-2.json', 'utf8')));
 
-    newClanData = {}
+    let newClanData = {}
     await axios.get(req, {timeout: 30000})
     .then(async result => {
         newClanData = result.data;
-
-        // Temp Testing
-        await fs.readFile('clan-logs-test-2.json', 'utf8', (err, jsonString) => {
-            if (err) {
-                console.log('Error reading clan-logs.json:', err)
-                return;
-            }
-            try {
-                newClanData = JSON.parse(jsonString)
-            } catch (err) {
-                console.log('Error parsing JSON string:', err);
-            }
-        });
-
-        await fs.readFile('clan-logs-test-1.json', 'utf8', (err, jsonString) => {
-            if (err) {
-                console.log('Error reading clan-logs.json:', err)
-                return;
-            }
-            try {
-                oldClanData = JSON.parse(jsonString)
-            } catch (err) {
-                console.log('Error parsing JSON string:', err);
-            }
-        });
-        console.log(`Old Array: ${JSON.stringify(oldClanData.clan)}`)
-        console.log(`New Array: ${JSON.stringify(newClanData.clan)}`)
 
         let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
         let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
@@ -1414,7 +1376,12 @@ async function updateClanData(clanID, client, channelID) {
             if (err) throw err;
             console.log('clan-logs.json updated successfully')
         });
-        channel.send(`Member Leaves: ${leavesArr}, Member Joins: ${joinsArr}`)
+
+        let leavesNames = leavesArr.map(obj => obj.name)
+        let joinsNames = joinsArr.map(obj => obj.name)
+
+
+        channel.send(`Member Leaves: ${JSON.stringify(leavesNames)}, Member Joins: ${JSON.stringify(joinsNames)}`)
             .then(message => console.log(`Sent message: ${message}`))
             .catch(err => console.error(`Error: ${err}`));
     })
@@ -1425,7 +1392,7 @@ async function updateClanData(clanID, client, channelID) {
     });
 }
 
-async function arrayDifference(arr1, arr2) {
+function arrayDifference(arr1, arr2) {
     const difference = arr1.filter(obj1 => 
         !arr2.some(obj2 => obj2.brawlhalla_id === obj1.brawlhalla_id));
     return difference;

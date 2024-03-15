@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { EmbedBuilder } = require('discord.js');
 const BHKEY = process.env.BH_KEY;
 const axios = require('axios');
 const fs = require('fs');
@@ -1354,36 +1355,75 @@ async function mockPrintClanElo() {
 // update Clan data in clans.json file and sends message when there is a difference
 async function updateClanData(clanID, client, channelID) {
     const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
+
     const channel = await client.channels.fetch(channelID)
     if (!channel) {
         console.warn(`Channel not found!: ${channel}`);
         return;
     }
 
-    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-2.json', 'utf8')));
-
+    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-3.json', 'utf8')));
     let newClanData = {}
+
     await axios.get(req, {timeout: 30000})
     .then(async result => {
         newClanData = result.data;
 
         let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
         let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
-        console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
-        console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
+        // console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
+        // console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
         
+        // reminder that fs.writeFile is async
         fs.writeFile('clan-logs.json', JSON.stringify(newClanData, null, 4), (err) => {
             if (err) throw err;
             console.log('clan-logs.json updated successfully')
         });
 
-        let leavesNames = leavesArr.map(obj => obj.name)
-        let joinsNames = joinsArr.map(obj => obj.name)
+        // let leavesNames = leavesArr.map(obj => obj.name)
+        // let joinsNames = joinsArr.map(obj => obj.name)
 
+        // this just removes any special characters
+        // leavesNames = leavesNames.map(name => name.replace(/[^\x00-\x7F]/g, ""))
+        // joinsNames = joinsNames.map(name => name.replace(/[^\x00-\x7F]/g, ""))
 
-        channel.send(`Member Leaves: ${JSON.stringify(leavesNames)}, Member Joins: ${JSON.stringify(joinsNames)}`)
-            .then(message => console.log(`Sent message: ${message}`))
-            .catch(err => console.error(`Error: ${err}`));
+        if (leavesArr.length <= 0 && joinsArr.length <= 0) {
+            console.log('No new clan log updates');
+            return;
+        }
+
+        oldMemberCount = oldClanData.clan.length
+        newMemberCount = newClanData.clan.length
+        // create embedded message
+        const embed = new EmbedBuilder()
+        .setTitle('FUGACI Clan Member Updates')
+        .setColor('#E78230')
+        .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
+        .setDescription(`Members ${oldMemberCount} → ${newMemberCount}`)
+        .setTimestamp();
+
+        // for later to use to find xp diff: oldClanData.clan.find(member => member.name === leavesArr[i].name).join_date
+        if (joinsArr.length >= 1) {
+            let joinsString = ''
+            for (let i = 0; i < joinsArr.length; i++) {
+                joinDate = joinsArr[i].join_date;
+                joinsString += `➕ [**${joinsArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${joinsArr[i].brawlhalla_id}) - Joined <t:${joinDate}:R>\n`;
+            }
+            embed.addFields({ name: 'Joins 🟢', value: joinsString })
+        }
+
+        if (leavesArr.length >= 1) {
+            let leavesString = ''
+            for (let i = 0; i < leavesArr.length; i++) {
+                timeMember = Math.floor(Date.now() / 1000) - leavesArr[i].join_date;
+                leavesString += `➖ [**${leavesArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${leavesArr[i].brawlhalla_id}) - Member for ${(timeMember / 86400).toFixed(1)} Days\n`; // timeMember is in seconds so convert to days
+            }
+            embed.addFields({ name: 'Leaves 🔴', value: leavesString })
+        }
+
+        channel.send({ embeds: [embed] })
+            .then(() => console.log(`Clan logs sent`))
+            .catch(err => console.error(`Error sending clan logs message: ${err}`));
     })
     .catch(error => {
         console.log(error);

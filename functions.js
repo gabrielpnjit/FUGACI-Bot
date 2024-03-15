@@ -1432,10 +1432,33 @@ async function updateClanData(clanID, client, channelID) {
     });
 }
 
+// return difference in arrays of brawlhalla user objects on brawlhalla_ids
 function arrayDifference(arr1, arr2) {
     const difference = arr1.filter(obj1 => 
         !arr2.some(obj2 => obj2.brawlhalla_id === obj1.brawlhalla_id));
     return difference;
+}
+
+function filterDifferentValues(arr1, arr2, property) {
+    const resultMap = new Map();
+
+    // Add values from arr1 to the map
+    arr1.forEach(obj => {
+        resultMap.set(obj[property], obj);
+    });
+
+    // Remove values that are common in arr2 from the map
+    arr2.forEach(obj => {
+        const value = obj[property];
+        if (resultMap.has(value)) {
+            resultMap.delete(value);
+        } else {
+            resultMap.set(value, obj);
+        }
+    });
+
+    // Convert map values back to array
+    return Array.from(resultMap.values());
 }
 
 module.exports = {

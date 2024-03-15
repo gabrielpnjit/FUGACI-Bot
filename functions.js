@@ -1362,7 +1362,7 @@ async function updateClanData(clanID, client, channelID) {
         return;
     }
 
-    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-3.json', 'utf8')));
+    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-2.json', 'utf8')));
     let newClanData = {}
 
     await axios.get(req, {timeout: 30000})
@@ -1439,26 +1439,20 @@ function arrayDifference(arr1, arr2) {
     return difference;
 }
 
-function filterDifferentValues(arr1, arr2, property) {
-    const resultMap = new Map();
+function getXpDifferences(oldClanData, newClanData) {
+    let memberArr = []
 
-    // Add values from arr1 to the map
-    arr1.forEach(obj => {
-        resultMap.set(obj[property], obj);
-    });
-
-    // Remove values that are common in arr2 from the map
-    arr2.forEach(obj => {
-        const value = obj[property];
-        if (resultMap.has(value)) {
-            resultMap.delete(value);
-        } else {
-            resultMap.set(value, obj);
+    for (let i = 0; i < oldClanData.clan.length; i++) {
+        let oldMember = oldClanData.clan[i];
+        for (let j = 0; j < newClanData.clan.length; j++) {
+            let newMember = newClanData.clan[j];
+            if (oldMember.brawlhalla_id == newMember.brawlhalla_id && newMember.xp > oldMember.xp) {
+                newMember.xp_diff = newMember.xp - oldMember.xp
+                memberArr.push(newMember);
+            }
         }
-    });
-
-    // Convert map values back to array
-    return Array.from(resultMap.values());
+    }
+    return memberArr
 }
 
 module.exports = {

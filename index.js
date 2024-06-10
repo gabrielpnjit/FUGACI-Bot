@@ -80,10 +80,9 @@ process.on('uncaughtExceptionMonitor', async (err) => {
 //     console.error('Multiple Resolves:\n', type, promise, reason);
 //   });
 
-// interval testing
 // login/start bot
 client.login(TOKEN)
 .then(result => {
-    setInterval(() => updateClanData(682808, client, '756654864280453134'), 10000);
+    setInterval(() => updateClanData(682808, client, '756654864280453134'), 900000); // clan logs are checked every 15 minutes
     updateClanData(682808, client, '756654864280453134');
 })

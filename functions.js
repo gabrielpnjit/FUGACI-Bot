@@ -1354,6 +1354,9 @@ async function mockPrintClanElo() {
 
 // update Clan data in clans.json file and sends message when there is a difference
 async function updateClanData(clanID, client, channelID) {
+    currentDate = new Date();
+    const currentDateTimeString = currentDate.toLocaleString("en-US", { timeZone: "America/New_York" })
+    console.log(`Checking Clan Data and Logs: ${currentDateTimeString}`)
     const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
 
     const channel = await client.channels.fetch(channelID)
@@ -1362,7 +1365,7 @@ async function updateClanData(clanID, client, channelID) {
         return;
     }
 
-    let oldClanData = JSON.parse((fs.readFileSync('clan-logs-test-2.json', 'utf8')));
+    let oldClanData = JSON.parse((fs.readFileSync('clan-logs.json', 'utf8')));
     let newClanData = {}
 
     await axios.get(req, {timeout: 30000})
@@ -1371,6 +1374,7 @@ async function updateClanData(clanID, client, channelID) {
 
         let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
         let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
+        let xpDiffArr = getXpDifferences(oldClanData, newClanData)
         // console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
         // console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
         
@@ -1383,20 +1387,17 @@ async function updateClanData(clanID, client, channelID) {
         // let leavesNames = leavesArr.map(obj => obj.name)
         // let joinsNames = joinsArr.map(obj => obj.name)
 
-        // this just removes any special characters
-        // leavesNames = leavesNames.map(name => name.replace(/[^\x00-\x7F]/g, ""))
-        // joinsNames = joinsNames.map(name => name.replace(/[^\x00-\x7F]/g, ""))
-
-        if (leavesArr.length <= 0 && joinsArr.length <= 0) {
+        if (leavesArr.length <= 0 && joinsArr.length <= 0 && xpDiffArr.length <= 0) {
             console.log('No new clan log updates');
             return;
         }
 
         oldMemberCount = oldClanData.clan.length
         newMemberCount = newClanData.clan.length
+    
         // create embedded message
         const embed = new EmbedBuilder()
-        .setTitle('FUGACI Clan Member Updates')
+        .setTitle('FUGACI Clan Updates')
         .setColor('#E78230')
         .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
         .setDescription(`Members ${oldMemberCount} → ${newMemberCount}`)
@@ -1404,21 +1405,31 @@ async function updateClanData(clanID, client, channelID) {
 
         // for later to use to find xp diff: oldClanData.clan.find(member => member.name === leavesArr[i].name).join_date
         if (joinsArr.length >= 1) {
-            let joinsString = ''
+            let joinsString = '';
             for (let i = 0; i < joinsArr.length; i++) {
                 joinDate = joinsArr[i].join_date;
                 joinsString += `➕ [**${joinsArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${joinsArr[i].brawlhalla_id}) - Joined <t:${joinDate}:R>\n`;
             }
             embed.addFields({ name: 'Joins 🟢', value: joinsString })
+            console.log(joinsArr);
         }
 
         if (leavesArr.length >= 1) {
-            let leavesString = ''
+            let leavesString = '';
             for (let i = 0; i < leavesArr.length; i++) {
                 timeMember = Math.floor(Date.now() / 1000) - leavesArr[i].join_date;
                 leavesString += `➖ [**${leavesArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${leavesArr[i].brawlhalla_id}) - Member for ${(timeMember / 86400).toFixed(1)} Days\n`; // timeMember is in seconds so convert to days
             }
             embed.addFields({ name: 'Leaves 🔴', value: leavesString })
+            console.log(leavesArr);
+        }
+
+        if (xpDiffArr.length >= 1) {
+            let xpDiffsString = '';
+            for (let i = 0; i < xpDiffArr.length; i++) {
+                xpDiffsString += `${xpDiffArr[i].name.replace(/[^\x00-\x7F]/g, "")}- XP: ${xpDiffArr[i].xp_diff}\n`
+            }
+            embed.addFields({ name: 'Clan XP', value: xpDiffsString })
         }
 
         channel.send({ embeds: [embed] })
@@ -1453,6 +1464,19 @@ function getXpDifferences(oldClanData, newClanData) {
         }
     }
     return memberArr
+}
+
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
 }
 
 module.exports = {

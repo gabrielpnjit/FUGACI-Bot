@@ -1375,6 +1375,7 @@ async function updateClanData(clanID, client, channelID) {
         let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
         let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
         let xpDiffArr = getXpDifferences(oldClanData, newClanData)
+        let totalXpDiff = newClanData.clan_xp - oldClanData.clan_xp
         // console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
         // console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
         
@@ -1427,9 +1428,9 @@ async function updateClanData(clanID, client, channelID) {
         if (xpDiffArr.length >= 1) {
             let xpDiffsString = '';
             for (let i = 0; i < xpDiffArr.length; i++) {
-                xpDiffsString += `${xpDiffArr[i].name.replace(/[^\x00-\x7F]/g, "")}- XP: ${xpDiffArr[i].xp_diff}\n`
+                xpDiffsString += `${xpDiffArr[i].name.replace(/[^\x00-\x7F]/g, "")}: +${xpDiffArr[i].xp_diff} XP\n`
             }
-            embed.addFields({ name: 'Clan XP', value: xpDiffsString })
+            embed.addFields({ name: `Clan XP Gained: +${totalXpDiff} XP`, value: xpDiffsString })
         }
 
         channel.send({ embeds: [embed] })
@@ -1463,6 +1464,9 @@ function getXpDifferences(oldClanData, newClanData) {
             }
         }
     }
+
+    memberArr.sort((a, b) => b.xp_diff - a.xp_diff); // sort from greatest to least
+
     return memberArr
 }
 

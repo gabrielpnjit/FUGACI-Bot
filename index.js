@@ -83,6 +83,6 @@ process.on('uncaughtExceptionMonitor', async (err) => {
 // login/start bot
 client.login(TOKEN)
 .then(result => {
-    setInterval(() => updateClanData(682808, client, '756654864280453134'), 900000); // clan logs are checked every 15 minutes
-    updateClanData(682808, client, '756654864280453134');
+    setInterval(() => updateClanData(682808, client, '1249901127940440156'), 900000); // clan logs are checked every 15 minutes
+    updateClanData(682808, client, '1249901127940440156');
 })

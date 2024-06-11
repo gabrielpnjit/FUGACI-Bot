@@ -37,8 +37,8 @@ module.exports = {
         const embed = new EmbedBuilder()
         .setTitle(`${valhallanEmoji} Valhallan Elo ${(region == "sa" ? "SAF" : region).toUpperCase()} ${valhallanEmoji}`)
         .addFields(
-            { name: `1v1 Elo Cutoff`, value: `${eloOnes.eloCutoff}`, inline: true },
-            { name: `2v2 Elo Cutoff`, value: `${eloTwos.eloCutoff}`, inline: true },
+            { name: `1v1 Elo Cutoff`, value: `[${eloOnes.eloCutoff}](https://www.brawlhalla.com/rankings/game/${region}/1v1/${eloOnes.page}?sortBy=rank)`, inline: true },
+            { name: `2v2 Elo Cutoff`, value: `[${eloTwos.eloCutoff}](https://www.brawlhalla.com/rankings/game/${region}/2v2/${eloTwos.page}?sortBy=rank)`, inline: true },
             { name: `Rank Cutoff`, value: `Top ${eloOnes.cutoff}`, inline: true },
             { name: `Valhallan Reset`, value: `<t:${resetTime}:R>`, inline: true },
             { name: `Season Ends`, value: `≈ <t:${seasonEndTime}:R>`, inline: true },

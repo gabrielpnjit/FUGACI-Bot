@@ -599,8 +599,41 @@ function timeConverter(UNIX_timestamp){
 }
 
 // return valhallan elo cutoff for us-e 1v1
-function getValhallanElo1v1() {
-    const url = `https://www.brawlhalla.com/rankings/game/us-e/1v1/6?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
+function getValhallanElo1v1(region) {
+    let page = 0;
+    let cutoff = 0;
+    switch (region) {
+        case "us-e": // top 150 for us-e/eu
+        case "eu":
+            page = 6;
+            cutoff = 150;
+            break;
+        case "brz": // top 100 for brz
+            page = 4;
+            cutoff = 100;
+            break;
+        case "us-w": // top 50 for us-w/sea
+        case "sea":
+            page = 2;
+            cutoff = 50;
+            break;
+        case "aus": // top 25 for aus/jpn/me
+        case "jpn":
+        case "me":
+            page = 1;
+            cutoff = 25;
+            break;
+        case "sa": // top 15 for saf - use data-id="14"
+            page = 1;
+            cutoff = 15;
+            break;
+
+
+        default:
+            console.log(`Error: Invalid Region ${region}`);
+            return null;
+    }
+    const url = `https://www.brawlhalla.com/rankings/game/${region}/1v1/${page}?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
     return axios.get(url, {
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -610,11 +643,17 @@ function getValhallanElo1v1() {
     })
     .then(res => {
         const $ = cheerio.load(res.data);
-        const lastRow = $('tr[data-id="24"]');
+        const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        // console.log(lastRow.html());
-        // console.log(`1v1 Valhallan Elo Cutoff: ${eloCutoff}`)
-        return eloCutoff;
+        console.log(lastRow.html());
+        console.log(url);
+        console.log(`1v1 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        return {
+            "region": region,
+            "eloCutoff": eloCutoff,
+            "page": page,
+            "cutoff": cutoff
+        };
     })
     .catch(err => {
         console.log("Error getting 1v1 Valhallan elo cutoff:");
@@ -624,8 +663,41 @@ function getValhallanElo1v1() {
 }
 
 // return valhallan elo cutoff for us-e 2v2
-function getValhallanElo2v2() {
-    const url = `https://www.brawlhalla.com/rankings/game/us-e/2v2/6?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
+function getValhallanElo2v2(region) {
+    let page = 0;
+    let cutoff = 0;
+    switch (region) {
+        case "us-e": // top 150 for us-e/eu
+        case "eu":
+            page = 6;
+            cutoff = 150;
+            break;
+        case "brz": // top 100 for brz
+            page = 4;
+            cutoff = 100;
+            break;
+        case "us-w": // top 50 for us-w/sea
+        case "sea":
+            page = 2;
+            cutoff = 50;
+            break;
+        case "aus": // top 25 for aus/jpn/me
+        case "jpn":
+        case "me":
+            page = 1;
+            cutoff = 25;
+            break;
+        case "sa": // top 15 for saf - use data-id="14"
+            page = 1;
+            cutoff = 15;
+            break;
+
+
+        default:
+            console.log(`Error: Invalid Region ${region}`);
+            return null;
+    }
+    const url = `https://www.brawlhalla.com/rankings/game/${region}/2v2/${page}?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
     return axios.get(url, {
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -635,11 +707,17 @@ function getValhallanElo2v2() {
     })
     .then(res => {
         const $ = cheerio.load(res.data);
-        const lastRow = $('tr[data-id="24"]');
+        const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        // console.log(lastRow.html());
-        // console.log(`2v2 Valhallan Elo Cutoff: ${eloCutoff}`)
-        return eloCutoff;
+        console.log(lastRow.html());
+        console.log(url);
+        console.log(`2v2 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        return {
+            "region": region,
+            "eloCutoff": eloCutoff,
+            "page": page,
+            "cutoff": cutoff
+        };
     })
     .catch(err => {
         console.log("Error getting 2v2 Valhallan elo cutoff:");

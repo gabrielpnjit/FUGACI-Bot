@@ -101,9 +101,9 @@ async function getClanElo(id) {
         if (id == '682808') {
             members['45923794'] = 'Jaboogle5274';
             members['20661966'] = 'KrY Optics';
-            members['29471488'] = 'DarkIngram678';
             members['17438506'] = 'Ghheko';
-            members['51183832'] = 'Majiama';
+            members['15764551'] = 'rango';
+            members['14630779'] = 'wallahi';
             members['47021368'] = 'Mokoffee(Mobile Acc)';
         }
 
@@ -283,14 +283,14 @@ async function getClanMembers(id) {
             const member = JSON.stringify(clan[i]);
             members[JSON.parse(member).brawlhalla_id] = JSON.parse(member).name;
         }
-        // temporarily hardcode console/mobile players
+        // temporarily hardcode console/mobile players and linked accounts
         if (id == '682808') {
             members['45923794'] = 'Jaboogle5274';
-            members['47021368'] = 'Mokoffee(Mobile Acc)';
             members['20661966'] = 'KrY Optics';
-            members['29471488'] = 'DarkIngram678';
             members['17438506'] = 'Ghheko';
-            members['51183832'] = 'Majiama';
+            members['15764551'] = 'rango';
+            members['14630779'] = 'wallahi';
+            members['47021368'] = 'Mokoffee(Mobile Acc)';
         }
 
         // create dictionary of member's names as keys and their current peak elo as values

@@ -3,7 +3,8 @@
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
     "discord.js": "^14.11.0",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "moment-timezone": "^0.5.45"
   },
   "name": "brawlhalla-fugaci-bot",
   "version": "1.0.0",

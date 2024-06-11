@@ -4,6 +4,7 @@ const BHKEY = process.env.BH_KEY;
 const axios = require('axios');
 const fs = require('fs');
 const cheerio = require('cheerio');
+const moment = require('moment-timezone');
 
 // courtesty of https://stackoverflow.com/questions/25500316/sort-a-dictionary-by-value-in-javascript
 // sort object and return same object type
@@ -647,10 +648,31 @@ function getValhallanElo2v2() {
     });
 }
 
+// get next reset time for valhallan, this is 5:00 pm est
+function getNextValhallanReset() {
+    // get current time in EST
+    let now = moment.tz("America/New_York");
+    
+    // get 5:00 am today in est
+    let next5AM = moment.tz("America/New_York").startOf('day').add(5, 'hours');
+
+    // if 5 am has already passed, move to next day
+    if (now.isAfter(next5AM)) {
+        next5AM.add(1, 'day');
+    }
+
+    let timestamp = next5AM.unix();
+
+    return timestamp;
+}
+
+console.log(getNextValhallanReset());
+
 module.exports = {
     getClanElo,
     getClanMembers,
     updateClanData,
     getValhallanElo1v1,
-    getValhallanElo2v2
+    getValhallanElo2v2,
+    getNextValhallanReset
 };

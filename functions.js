@@ -3,6 +3,8 @@ const { EmbedBuilder } = require('discord.js');
 const BHKEY = process.env.BH_KEY;
 const axios = require('axios');
 const fs = require('fs');
+const cheerio = require('cheerio');
+
 // courtesty of https://stackoverflow.com/questions/25500316/sort-a-dictionary-by-value-in-javascript
 // sort object and return same object type
 function sort_object(obj) {
@@ -462,8 +464,8 @@ async function updateClanData(clanID, client, channelID) {
     currentDate = new Date();
     const currentDateTimeString = currentDate.toLocaleString("en-US", { timeZone: "America/New_York" })
     console.log(`Checking Clan Data and Logs: ${currentDateTimeString}`)
-    const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
-
+    const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY + `&timestamp=${new Date().getTime()}`;
+    console.log(req)
     const channel = await client.channels.fetch(channelID)
     if (!channel) {
         console.warn(`Channel not found!: ${channel}`);
@@ -473,7 +475,14 @@ async function updateClanData(clanID, client, channelID) {
     let oldClanData = JSON.parse((fs.readFileSync('clan-logs.json', 'utf8')));
     let newClanData = {}
 
-    await axios.get(req, {timeout: 30000})
+    await axios.get(req, {
+        timeout: 30000,
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    })
     .then(async result => {
         newClanData = result.data;
 
@@ -588,30 +597,60 @@ function timeConverter(UNIX_timestamp){
     return time;
 }
 
+// return valhallan elo cutoff for us-e 1v1
+function getValhallanElo1v1() {
+    const url = `https://www.brawlhalla.com/rankings/game/us-e/1v1/6?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
+    return axios.get(url, {
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    })
+    .then(res => {
+        const $ = cheerio.load(res.data);
+        const lastRow = $('tr[data-id="24"]');
+        const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
+        // console.log(lastRow.html());
+        // console.log(`1v1 Valhallan Elo Cutoff: ${eloCutoff}`)
+        return eloCutoff;
+    })
+    .catch(err => {
+        console.log("Error getting 1v1 Valhallan elo cutoff:");
+        console.log(err);
+        return err;
+    });
+}
+
+// return valhallan elo cutoff for us-e 2v2
+function getValhallanElo2v2() {
+    const url = `https://www.brawlhalla.com/rankings/game/us-e/2v2/6?sortBy=rank&timestamp=${new Date().getTime()}` // timestamp bypasses caching
+    return axios.get(url, {
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    })
+    .then(res => {
+        const $ = cheerio.load(res.data);
+        const lastRow = $('tr[data-id="24"]');
+        const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
+        // console.log(lastRow.html());
+        // console.log(`2v2 Valhallan Elo Cutoff: ${eloCutoff}`)
+        return eloCutoff;
+    })
+    .catch(err => {
+        console.log("Error getting 2v2 Valhallan elo cutoff:");
+        console.log(err);
+        return err;
+    });
+}
+
 module.exports = {
     getClanElo,
     getClanMembers,
     updateClanData,
+    getValhallanElo1v1,
+    getValhallanElo2v2
 };
-
-// this for loop is the slow version of the api request for all members, leaving it here in case
-// new faster version doesnt work
-//         for (const id in members) {
-//             let url = 'https://api.brawlhalla.com/player/' + id + '/ranked?api_key=' + BHKEY;
-// // specifically this "await" is the key
-//             await axios.get(url)
-//             .then(result => {
-//                 const peakElo = result.data.peak_rating;
-//                 if (peakElo != undefined) {
-//                     memberElo[members[id]] = peakElo;
-//                 }
-//                 else {
-//                     memberElo[members[id]] = -1;
-//                 }
-//             })
-//             .catch(error => {
-//                 // console.log(error);
-//                 failedIds.push(id);
-//                 // console.log(`Error getting data for: ${id} (probably timeout error)`);
-//             });
-//         }

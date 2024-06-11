@@ -86,7 +86,7 @@ module.exports = {
                     } else {
                         rank = tin;
                     }
-                    let str = `${rank} ${count}. ${member.name} \n`;
+                    let str = `${rank} ${count}. ${member.name.replace(/[^\x00-\x7F]/g, "")} \n`;
                     let temp = members;
                     temp += str;
                     if (temp.length > 1024) {

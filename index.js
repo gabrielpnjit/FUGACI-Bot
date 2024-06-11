@@ -1,5 +1,6 @@
 // using discord js v14! most current tutorials are v13 so be wary
 require('dotenv').config();
+const { updateClanData } = require('./functions.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const TOKEN = process.env.DISC_TOKEN;
@@ -80,4 +81,8 @@ process.on('uncaughtExceptionMonitor', async (err) => {
 //   });
 
 // login/start bot
-client.login(TOKEN);
+client.login(TOKEN)
+.then(result => {
+    setInterval(() => updateClanData(682808, client, '1249901127940440156'), 900000); // clan logs are checked every 15 minutes
+    updateClanData(682808, client, '1249901127940440156');
+})

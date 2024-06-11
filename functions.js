@@ -1,6 +1,8 @@
 require('dotenv').config();
+const { EmbedBuilder } = require('discord.js');
 const BHKEY = process.env.BH_KEY;
 const axios = require('axios');
+const fs = require('fs');
 // courtesty of https://stackoverflow.com/questions/25500316/sort-a-dictionary-by-value-in-javascript
 // sort object and return same object type
 function sort_object(obj) {
@@ -99,9 +101,9 @@ async function getClanElo(id) {
         if (id == '682808') {
             members['45923794'] = 'Jaboogle5274';
             members['20661966'] = 'KrY Optics';
-            members['29471488'] = 'DarkIngram678';
             members['17438506'] = 'Ghheko';
-            members['51183832'] = 'Majiama';
+            members['15764551'] = 'rango';
+            members['14630779'] = 'wallahi';
             members['47021368'] = 'Mokoffee(Mobile Acc)';
         }
 
@@ -245,50 +247,6 @@ async function getClanElo(id) {
     }
 }
 
-// return similar object of getClanElo() except without api requests so it is "fake"
-// for testing purposes so we don't keep hitting api request limits
-async function mockGetClanElo() {
-    const memberElo = {
-        wood: 2482,
-        AyoBlue: 2440,
-        DaddyHiZo: 2307,
-        Plas: 2232,
-        Zxora: 2183,
-        ByDynoo: 2179,
-        'Lone.': 2027,
-        'Love <3 (guy)': 2019,
-        'Religious Mantis': 2015,
-        sY: 2012,
-        JellyTheAce: 2008,
-        LemonCherryGelato: 2004,
-        Stevie: 1996,
-        Krilo: 1951,
-        PA1NX: 1903,
-        mindbacon: 1881,
-        Femboy: 1847,
-        lemur: 1843,
-        Reeb: 1828,
-        AcerMvp: 1810,
-        'Anna.': 1802,
-        markdoesntfitin: 1746,
-        'Black Jesus': 1684,
-        // including matt and below causes it to be too long
-        Matt_: 1595,
-        pepa: 1585,
-        AceSwift: 1566,
-        precise: 1553,
-        Chief: -1,
-        'Doom (lagging)': -1,
-        'Lil Tjay': -1,
-        runingbs: -1,
-        torrent: -1,
-        wueku1_: -1,
-        '4th Global Scythe Queen Boss': -1,
-        'Sho Kusakabe': -1,
-      };
-    return memberElo;
-}
-
 let clans = {};
 async function getClanMembers(id) {
     try {
@@ -325,14 +283,14 @@ async function getClanMembers(id) {
             const member = JSON.stringify(clan[i]);
             members[JSON.parse(member).brawlhalla_id] = JSON.parse(member).name;
         }
-        // temporarily hardcode console/mobile players
+        // temporarily hardcode console/mobile players and linked accounts
         if (id == '682808') {
             members['45923794'] = 'Jaboogle5274';
-            members['47021368'] = 'Mokoffee(Mobile Acc)';
             members['20661966'] = 'KrY Optics';
-            members['29471488'] = 'DarkIngram678';
             members['17438506'] = 'Ghheko';
-            members['51183832'] = 'Majiama';
+            members['15764551'] = 'rango';
+            members['14630779'] = 'wallahi';
+            members['47021368'] = 'Mokoffee(Mobile Acc)';
         }
 
         // create dictionary of member's names as keys and their current peak elo as values
@@ -369,7 +327,7 @@ async function getClanMembers(id) {
                     .then(result => {
                         // console.log(`got data for ${members[id]}`);
                         const peakElo = result.data.peak_rating;
-                        if (peakElo != undefined) {
+                        if (peakElo > 0) {
                             clanMembers.push(result.data);
                         }
                         else {
@@ -431,7 +389,7 @@ async function getClanMembers(id) {
                         .then(result => {
                             // console.log(`got data for ${members[id]}`);
                             const peakElo = result.data.peak_rating;
-                            if (peakElo != undefined) {
+                            if (peakElo > 0) {
                                 clanMembers.push(result.data);
                             }
                             else {
@@ -458,6 +416,10 @@ async function getClanMembers(id) {
         }
 
         let sortedMemberData = clanMembers.sort(compareValues('peak_rating', 'desc'));
+        // add valhallan flag
+        for (let member of sortedMemberData) {
+          console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
+        }
         // check for ids with errors
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {
@@ -489,872 +451,147 @@ async function getClanMembers(id) {
     }
 }
 
-async function mockGetClanMembers() {
-    return [
-        {
-          name: 'â½\x95Scorch',
-          brawlhalla_id: 9283507,
-          rating: 2416,
-          peak_rating: 2416,
-          tier: 'Diamond',
-          wins: 273,
-          games: 426,
-          region: 'US-W',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'â½\x95Scorch',
-            brawlhalla_id: 9283507,
-            rating: 1564,
-            peak_rating: 1573,
-            tier: 'Gold 4',
-            wins: 32,
-            games: 41,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Unruly | Empty',
-          brawlhalla_id: 41241821,
-          rating: 2412,
-          peak_rating: 2412,
-          tier: 'Diamond',
-          wins: 83,
-          games: 141,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          rotating_ranked: []
-        },
-        {
-          name: 'b1unts',
-          brawlhalla_id: 3843154,
-          rating: 2403,
-          peak_rating: 2407,
-          tier: 'Diamond',
-          wins: 45,
-          games: 58,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object], [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'Ryukira',
-          brawlhalla_id: 55048991,
-          rating: 2200,
-          peak_rating: 2272,
-          tier: 'Diamond',
-          wins: 92,
-          games: 158,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'Ryukira',
-            brawlhalla_id: 55048991,
-            rating: 1341,
-            peak_rating: 1341,
-            tier: 'Silver 5',
-            wins: 9,
-            games: 9,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Celsior',
-          brawlhalla_id: 55978588,
-          rating: 2214,
-          peak_rating: 2259,
-          tier: 'Diamond',
-          wins: 32,
-          games: 47,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: []
-        },
-        {
-          name: 'YuK.',
-          brawlhalla_id: 76558389,
-          rating: 2114,
-          peak_rating: 2259,
-          tier: 'Diamond',
-          wins: 392,
-          games: 787,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'YuK.',
-            brawlhalla_id: 76558389,
-            rating: 1585,
-            peak_rating: 1596,
-            tier: 'Gold 4',
-            wins: 35,
-            games: 44,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Azu',
-          brawlhalla_id: 3543820,
-          rating: 2197,
-          peak_rating: 2244,
-          tier: 'Diamond',
-          wins: 52,
-          games: 88,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'Vogel',
-          brawlhalla_id: 3505646,
-          rating: 2227,
-          peak_rating: 2227,
-          tier: 'Diamond',
-          wins: 10,
-          games: 10,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'Vogel',
-            brawlhalla_id: 3505646,
-            rating: 1449,
-            peak_rating: 1449,
-            tier: 'Gold 2',
-            wins: 18,
-            games: 19,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'KrY Optics',
-          brawlhalla_id: 20661966,
-          rating: 2203,
-          peak_rating: 2203,
-          tier: 'Diamond',
-          wins: 24,
-          games: 30,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'KrY Optics',
-            brawlhalla_id: 20661966,
-            rating: 1417,
-            peak_rating: 1448,
-            tier: 'Gold 1',
-            wins: 20,
-            games: 27,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'zacky',
-          brawlhalla_id: 3231237,
-          rating: 2121,
-          peak_rating: 2165,
-          tier: 'Diamond',
-          wins: 44,
-          games: 74,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'zacky',
-            brawlhalla_id: 3231237,
-            rating: 1296,
-            peak_rating: 1296,
-            tier: 'Silver 4',
-            wins: 6,
-            games: 6,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Syeddy',
-          brawlhalla_id: 43936530,
-          rating: 2014,
-          peak_rating: 2117,
-          tier: 'Diamond',
-          wins: 134,
-          games: 248,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'sortie y2k',
-          brawlhalla_id: 46025550,
-          rating: 1976,
-          peak_rating: 2095,
-          tier: 'Diamond',
-          wins: 162,
-          games: 314,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'sortie y2k',
-            brawlhalla_id: 46025550,
-            rating: 1467,
-            peak_rating: 1513,
-            tier: 'Gold 2',
-            wins: 29,
-            games: 39,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Solzda',
-          brawlhalla_id: 553289,
-          rating: 2078,
-          peak_rating: 2078,
-          tier: 'Diamond',
-          wins: 9,
-          games: 10,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'BicBoi3',
-          brawlhalla_id: 11333466,
-          rating: 2036,
-          peak_rating: 2076,
-          tier: 'Diamond',
-          wins: 101,
-          games: 187,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'BicBoi3',
-            brawlhalla_id: 11333466,
-            rating: 1332,
-            peak_rating: 1333,
-            tier: 'Silver 4',
-            wins: 9,
-            games: 10,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Cake',
-          brawlhalla_id: 2447718,
-          rating: 2019,
-          peak_rating: 2057,
-          tier: 'Diamond',
-          wins: 79,
-          games: 139,
-          region: 'US-W',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'Cake',
-            brawlhalla_id: 2447718,
-            rating: 1250,
-            peak_rating: 1250,
-            tier: 'Silver 3',
-            wins: 3,
-            games: 3,
-            region: 'US-W'
-          }
-        },
-        {
-          name: 'Jaboogle5274',
-          brawlhalla_id: 45923794,
-          rating: 2007,
-          peak_rating: 2050,
-          tier: 'Diamond',
-          wins: 73,
-          games: 127,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: []
-        },
-        {
-          name: 'brendaddy',
-          brawlhalla_id: 9989745,
-          rating: 1870,
-          peak_rating: 2002,
-          tier: 'Diamond',
-          wins: 103,
-          games: 193,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [ [Object], [Object], [Object], [Object] ],
-          '2v2': [ [Object] ],
-          rotating_ranked: {
-            name: 'brendaddy',
-            brawlhalla_id: 9989745,
-            rating: 1589,
-            peak_rating: 1684,
-            tier: 'Gold 4',
-            wins: 54,
-            games: 67,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'thatguy',
-          brawlhalla_id: 3219348,
-          rating: 1965,
-          peak_rating: 1980,
-          tier: 'Platinum 5',
-          wins: 11,
-          games: 15,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object]
-          ],
-          rotating_ranked: {
-            name: 'thatguy',
-            brawlhalla_id: 3219348,
-            rating: 1337,
-            peak_rating: 1366,
-            tier: 'Silver 4',
-            wins: 12,
-            games: 16,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Luni',
-          brawlhalla_id: 9845707,
-          rating: 1835,
-          peak_rating: 1909,
-          tier: 'Platinum 3',
-          wins: 76,
-          games: 149,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [ [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'Mokoffee',
-          brawlhalla_id: 47021368,
-          rating: 1822,
-          peak_rating: 1843,
-          tier: 'Platinum 3',
-          wins: 24,
-          games: 42,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'Mokoffee',
-            brawlhalla_id: 47021368,
-            rating: 1475,
-            peak_rating: 1475,
-            tier: 'Gold 2',
-            wins: 38,
-            games: 58,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Think.PNF',
-          brawlhalla_id: 6396194,
-          rating: 1745,
-          peak_rating: 1827,
-          tier: 'Platinum 2',
-          wins: 78,
-          games: 153,
-          region: 'US-W',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object],
-            [Object], [Object], [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object], [Object] ],
-          rotating_ranked: {
-            name: 'Think.PNF',
-            brawlhalla_id: 6396194,
-            rating: 1314,
-            peak_rating: 1314,
-            tier: 'Silver 4',
-            wins: 7,
-            games: 7,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Briyoda',
-          brawlhalla_id: 53692,
-          rating: 1806,
-          peak_rating: 1806,
-          tier: 'Platinum 2',
-          wins: 15,
-          games: 24,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'kc',
-          brawlhalla_id: 8681175,
-          rating: 1760,
-          peak_rating: 1794,
-          tier: 'Platinum 2',
-          wins: 28,
-          games: 53,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [ [Object], [Object] ],
-          rotating_ranked: {
-            name: 'kc',
-            brawlhalla_id: 8681175,
-            rating: 1260,
-            peak_rating: 1260,
-            tier: 'Silver 3',
-            wins: 4,
-            games: 4,
-            region: 'US-E'
-          }
-        },
-        {
-          name: 'Avalon',
-          brawlhalla_id: 10356664,
-          rating: 1592,
-          peak_rating: 1649,
-          tier: 'Gold 4',
-          wins: 16,
-          games: 31,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object]
-          ],
-          '2v2': [],
-          rotating_ranked: []
-        },
-        {
-          name: 'Mokoffee',
-          brawlhalla_id: 67266260,
-          rating: 1571,
-          peak_rating: 1571,
-          tier: 'Gold 4',
-          wins: 6,
-          games: 10,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object], [Object], [Object],
-            [Object]
-          ],
-          '2v2': [ [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'Gnortius',
-          brawlhalla_id: 48504501,
-          rating: 1662,
-          peak_rating: 1568,
-          tier: 'Gold 4',
-          wins: 3,
-          games: 4,
-          region: 'US-E',
-          global_rank: 0,
-          region_rank: 0,
-          legends: [
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object],
-            [Object], [Object]
-          ],
-          '2v2': [ [Object] ],
-          rotating_ranked: []
-        },
-        {
-          name: 'Doernbecher',
-          brawlhalla_id: 10182480,
-          rating: -1,
-          peak_rating: -1
-        }
-      ];
-}
 // print result of getClanElo()
 async function printClanElo(id) {
     let res = await getClanElo(id);
     console.log(res);
 }
 
-// print result of mockGetClanElo()
-async function mockPrintClanElo() {
-    let res = await mockGetClanElo();
-    console.log(res);
+// update Clan data in clans.json file and sends message when there is a difference
+async function updateClanData(clanID, client, channelID) {
+    currentDate = new Date();
+    const currentDateTimeString = currentDate.toLocaleString("en-US", { timeZone: "America/New_York" })
+    console.log(`Checking Clan Data and Logs: ${currentDateTimeString}`)
+    const req = 'https://api.brawlhalla.com/clan/' + clanID + '/?api_key=' + BHKEY;
+
+    const channel = await client.channels.fetch(channelID)
+    if (!channel) {
+        console.warn(`Channel not found!: ${channel}`);
+        return;
+    }
+
+    let oldClanData = JSON.parse((fs.readFileSync('clan-logs.json', 'utf8')));
+    let newClanData = {}
+
+    await axios.get(req, {timeout: 30000})
+    .then(async result => {
+        newClanData = result.data;
+
+        let leavesArr = await arrayDifference(oldClanData.clan, newClanData.clan)
+        let joinsArr = await arrayDifference(newClanData.clan, oldClanData.clan)
+        let xpDiffArr = getXpDifferences(oldClanData, newClanData)
+        let totalXpDiff = newClanData.clan_xp - oldClanData.clan_xp
+        // console.log(`Leaves Array: ${JSON.stringify(leavesArr)}`)
+        // console.log(`Joins Array: ${JSON.stringify(joinsArr)}`)
+        
+        // reminder that fs.writeFile is async
+        fs.writeFile('clan-logs.json', JSON.stringify(newClanData, null, 4), (err) => {
+            if (err) throw err;
+            console.log('clan-logs.json updated successfully')
+        });
+
+        // let leavesNames = leavesArr.map(obj => obj.name)
+        // let joinsNames = joinsArr.map(obj => obj.name)
+
+        if (leavesArr.length <= 0 && joinsArr.length <= 0 && xpDiffArr.length <= 0) {
+            console.log('No new clan log updates');
+            return;
+        }
+
+        oldMemberCount = oldClanData.clan.length
+        newMemberCount = newClanData.clan.length
+    
+        // create embedded message
+        const embed = new EmbedBuilder()
+        .setTitle('FUGACI Clan Updates')
+        .setColor('#E78230')
+        .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
+        .setDescription(`Members ${oldMemberCount} → ${newMemberCount}`)
+        .setTimestamp();
+
+        // for later to use to find xp diff: oldClanData.clan.find(member => member.name === leavesArr[i].name).join_date
+        if (joinsArr.length >= 1) {
+            let joinsString = '';
+            for (let i = 0; i < joinsArr.length; i++) {
+                joinDate = joinsArr[i].join_date;
+                joinsString += `➕ [**${joinsArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${joinsArr[i].brawlhalla_id}) - Joined <t:${joinDate}:R>\n`;
+            }
+            embed.addFields({ name: 'Joins 🟢', value: joinsString })
+            console.log(joinsArr);
+        }
+
+        if (leavesArr.length >= 1) {
+            let leavesString = '';
+            for (let i = 0; i < leavesArr.length; i++) {
+                timeMember = Math.floor(Date.now() / 1000) - leavesArr[i].join_date;
+                leavesString += `➖ [**${leavesArr[i].name.replace(/[^\x00-\x7F]/g, "")}**](https://corehalla.com/stats/player/${leavesArr[i].brawlhalla_id}) - Member for ${(timeMember / 86400).toFixed(1)} Days\n`; // timeMember is in seconds so convert to days
+            }
+            embed.addFields({ name: 'Leaves 🔴', value: leavesString })
+            console.log(leavesArr);
+        }
+
+        if (xpDiffArr.length >= 1) {
+            let xpDiffsString = '';
+            for (let i = 0; i < xpDiffArr.length; i++) {
+                xpDiffsString += `${xpDiffArr[i].name.replace(/[^\x00-\x7F]/g, "")}: +${xpDiffArr[i].xp_diff} XP\n`
+            }
+            embed.addFields({ name: `Clan XP Gained: +${totalXpDiff} XP`, value: xpDiffsString })
+        }
+
+        channel.send({ embeds: [embed] })
+            .then(() => console.log(`Clan logs sent`))
+            .catch(err => console.error(`Error sending clan logs message: ${err}`));
+    })
+    .catch(error => {
+        console.log(error);
+        errorFlag = true;
+        console.log('\x1b[31m', 'ERR: Probably API Rate Limit Reached');
+    });
+}
+
+// return difference in arrays of brawlhalla user objects on brawlhalla_ids
+function arrayDifference(arr1, arr2) {
+    const difference = arr1.filter(obj1 => 
+        !arr2.some(obj2 => obj2.brawlhalla_id === obj1.brawlhalla_id));
+    return difference;
+}
+
+function getXpDifferences(oldClanData, newClanData) {
+    let memberArr = []
+
+    for (let i = 0; i < oldClanData.clan.length; i++) {
+        let oldMember = oldClanData.clan[i];
+        for (let j = 0; j < newClanData.clan.length; j++) {
+            let newMember = newClanData.clan[j];
+            if (oldMember.brawlhalla_id == newMember.brawlhalla_id && newMember.xp > oldMember.xp) {
+                newMember.xp_diff = newMember.xp - oldMember.xp
+                memberArr.push(newMember);
+            }
+        }
+    }
+
+    memberArr.sort((a, b) => b.xp_diff - a.xp_diff); // sort from greatest to least
+
+    return memberArr
+}
+
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
 }
 
 module.exports = {
     getClanElo,
-    mockGetClanElo,
     getClanMembers,
-    mockGetClanMembers,
+    updateClanData,
 };
 
 // this for loop is the slow version of the api request for all members, leaving it here in case

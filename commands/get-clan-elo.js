@@ -39,6 +39,8 @@ module.exports = {
                 res = await bhapi.getClanMembers('682808');
             }
             const pages = [];
+            const valhallanCutoff = await bhapi.getValhallanElo1v1();
+            const val = interaction.client.emojis.cache.get('1249882046357176385');
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');
             const gold = interaction.client.emojis.cache.get('1004897801353838632');
@@ -63,7 +65,14 @@ module.exports = {
                 for (let i in res) {
                     let member = res[i];
                     let elo = member.peak_rating;
-                    if (elo >= 2000) {
+                    if (elo >= valhallanCutoff && member.wins >= 100) {
+                        rank = val;
+                        sum += elo;
+                        totalWins += member.wins;
+                        totalLosses += (member.games - member.wins);
+                        memberCount++;
+                    }
+                    else if (elo >= 2000) {
                         rank = diam;
                         sum += elo;
                         totalWins += member.wins;

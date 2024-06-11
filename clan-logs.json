@@ -2,7 +2,7 @@
     "clan_id": 682808,
     "clan_name": "FUGACI",
     "clan_create_date": 1550198205,
-    "clan_xp": "14973066",
+    "clan_xp": "14975421",
     "clan": [
         {
             "brawlhalla_id": 10182480,
@@ -23,7 +23,8 @@
             "name": "Azu",
             "rank": "Officer",
             "join_date": 1643518033,
-            "xp": 534713
+            "xp": 535163,
+            "xp_diff": 450
         },
         {
             "brawlhalla_id": 553289,
@@ -44,7 +45,8 @@
             "name": "BicBoi3",
             "rank": "Officer",
             "join_date": 1672104505,
-            "xp": 205699
+            "xp": 205975,
+            "xp_diff": 276
         },
         {
             "brawlhalla_id": 23758372,
@@ -58,14 +60,16 @@
             "name": "JellyTheAce",
             "rank": "Member",
             "join_date": 1675653775,
-            "xp": 299697
+            "xp": 299766,
+            "xp_diff": 69
         },
         {
             "brawlhalla_id": 3843154,
             "name": "b1unts",
             "rank": "Leader",
             "join_date": 1682049956,
-            "xp": 383065
+            "xp": 383179,
+            "xp_diff": 114
         },
         {
             "brawlhalla_id": 71837320,
@@ -100,7 +104,8 @@
             "name": "Tee",
             "rank": "Member",
             "join_date": 1688684784,
-            "xp": 297531
+            "xp": 297645,
+            "xp_diff": 114
         },
         {
             "brawlhalla_id": 79396294,
@@ -156,7 +161,8 @@
             "name": "Blerpgyatus",
             "rank": "Officer",
             "join_date": 1700698132,
-            "xp": 263577
+            "xp": 263897,
+            "xp_diff": 320
         },
         {
             "brawlhalla_id": 37033863,
@@ -198,7 +204,8 @@
             "name": "fragile",
             "rank": "Member",
             "join_date": 1708054675,
-            "xp": 119163
+            "xp": 119388,
+            "xp_diff": 225
         },
         {
             "brawlhalla_id": 30121951,
@@ -240,7 +247,8 @@
             "name": "CombatGenji",
             "rank": "Officer",
             "join_date": 1710181296,
-            "xp": 117416
+            "xp": 117465,
+            "xp_diff": 49
         },
         {
             "brawlhalla_id": 62478295,
@@ -296,7 +304,8 @@
             "name": "King of Ephyra",
             "rank": "Member",
             "join_date": 1716323072,
-            "xp": 18090
+            "xp": 18372,
+            "xp_diff": 282
         },
         {
             "brawlhalla_id": 106954367,
@@ -324,7 +333,8 @@
             "name": "YRN | tana",
             "rank": "Member",
             "join_date": 1717515020,
-            "xp": 12334
+            "xp": 12586,
+            "xp_diff": 252
         },
         {
             "brawlhalla_id": 66096220,
@@ -338,7 +348,8 @@
             "name": "XIBLURHINO",
             "rank": "Member",
             "join_date": 1717632120,
-            "xp": 1889
+            "xp": 2093,
+            "xp_diff": 204
         },
         {
             "brawlhalla_id": 72705901,

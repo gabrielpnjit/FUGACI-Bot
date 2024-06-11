@@ -327,7 +327,7 @@ async function getClanMembers(id) {
                     .then(result => {
                         // console.log(`got data for ${members[id]}`);
                         const peakElo = result.data.peak_rating;
-                        if (peakElo != undefined) {
+                        if (peakElo > 0) {
                             clanMembers.push(result.data);
                         }
                         else {
@@ -389,7 +389,7 @@ async function getClanMembers(id) {
                         .then(result => {
                             // console.log(`got data for ${members[id]}`);
                             const peakElo = result.data.peak_rating;
-                            if (peakElo != undefined) {
+                            if (peakElo > 0) {
                                 clanMembers.push(result.data);
                             }
                             else {
@@ -416,6 +416,10 @@ async function getClanMembers(id) {
         }
 
         let sortedMemberData = clanMembers.sort(compareValues('peak_rating', 'desc'));
+        // add valhallan flag
+        for (let member of sortedMemberData) {
+          console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
+        }
         // check for ids with errors
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {

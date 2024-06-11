@@ -645,9 +645,9 @@ function getValhallanElo1v1(region) {
         const $ = cheerio.load(res.data);
         const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        console.log(lastRow.html());
-        console.log(url);
-        console.log(`1v1 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        // console.log(lastRow.html());
+        // console.log(url);
+        // console.log(`1v1 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
         return {
             "region": region,
             "eloCutoff": eloCutoff,
@@ -709,9 +709,9 @@ function getValhallanElo2v2(region) {
         const $ = cheerio.load(res.data);
         const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        console.log(lastRow.html());
-        console.log(url);
-        console.log(`2v2 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        // console.log(lastRow.html());
+        // console.log(url);
+        // console.log(`2v2 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
         return {
             "region": region,
             "eloCutoff": eloCutoff,
@@ -743,8 +743,6 @@ function getNextValhallanReset() {
 
     return timestamp;
 }
-
-console.log(getNextValhallanReset());
 
 module.exports = {
     getClanElo,

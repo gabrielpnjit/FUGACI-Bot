@@ -39,7 +39,8 @@ module.exports = {
                 res = await bhapi.getClanMembers('682808');
             }
             const pages = [];
-            const valhallanCutoff = await bhapi.getValhallanElo1v1();
+            let valhallanCutoff = await bhapi.getValhallanElo1v1("us-e");
+            valhallanCutoff = valhallanCutoff.eloCutoff;
             const val = interaction.client.emojis.cache.get('1249882046357176385');
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');

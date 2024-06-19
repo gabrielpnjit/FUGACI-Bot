@@ -21,6 +21,15 @@ module.exports = {
         .setName('leaderboard')
         .setDescription('View ranked leaderboard of all FUGACI members by peak ELO!')
         .addStringOption(option =>
+            option.setName('gamemode')
+                .setDescription('Ranked 1v1 or 2v2 Leaderboard?')
+                .setRequired(true)
+                .addChoices(
+                    { name: '1v1', value: '1v1' },
+                    { name: '2v2', value: '2v2' },
+                    // { name: 'Rotating', value: 'rotating' }, // TODO: add rotating
+                ))
+        .addStringOption(option =>
             option.setName('clanid')
                 .setDescription('Enter clan ID of another specific clan!')
                 .setRequired(false)),
@@ -28,24 +37,25 @@ module.exports = {
         async execute(interaction) {
             await interaction.deferReply();
             // FUGACI clan id = 682808
-            let option = interaction.options.getString('clanid');
+            let clanId = interaction.options.getString('clanid');
+            const gamemode = interaction.options.getString('gamemode');
             let res;
-            console.log(option);
-            if (option != null) {
-                res = await bhapi.getClanMembers(option);
+            console.log(clanId);
+            if (clanId != null) {
+                res = await bhapi.getClanMembers(clanId);
             }
             else {
-                option = '682808';
+                clanId = '682808';
                 res = await bhapi.getClanMembers('682808');
             }
             const pages = [];
-            let valhallanCutoff = await bhapi.getValhallanElo1v1("us-e");
-            valhallanCutoff = valhallanCutoff.eloCutoff;
             const val = interaction.client.emojis.cache.get('1249882046357176385');
             const diam = interaction.client.emojis.cache.get('1004897803937521684');
             const plat = interaction.client.emojis.cache.get('1004897802112995391');
             const gold = interaction.client.emojis.cache.get('1004897801353838632');
             const tin = interaction.client.emojis.cache.get('1004897800091336795');
+
+            let valhallanCutoff = 3000;
 
             if (res) {
                 let pagesMembers = [];
@@ -60,11 +70,25 @@ module.exports = {
                 let totalWins = 0;
                 let totalLosses = 0;
                 const clanName = res[0];
-                res = res[1];
+                let clanMembers = {};
+                if (gamemode == "1v1") {
+                    valhallanCutoff = await bhapi.getValhallanElo1v1("us-e");
+                    valhallanCutoff = valhallanCutoff.eloCutoff;
+                    clanMembers = res[1];
+                }
+                else if (gamemode == "2v2") {
+                    valhallanCutoff = await bhapi.getValhallanElo2v2("us-e");
+                    valhallanCutoff = valhallanCutoff.eloCutoff;
+                    clanMembers = bhapi.get2sTeams(res[1]);
+                }
+                // else { // rotating
+                //     valhallanCutoff = 10000;
+                //     console.log("rotating gamemode...")
+                // }
                 // these two strings, members and elos are passed into
                 // two seprate fields in the embedbuilder as values
-                for (let i in res) {
-                    let member = res[i];
+                for (let i in clanMembers) {
+                    let member = clanMembers[i];
                     let elo = member.peak_rating;
                     if (elo >= valhallanCutoff && member.wins >= 100) {
                         rank = val;
@@ -96,7 +120,7 @@ module.exports = {
                     } else {
                         rank = tin;
                     }
-                    let str = `${rank} ${count}. ${member.name.replace(/[^\x00-\x7F]/g, "")} \n`;
+                    let str = `${rank} ${count}. ${gamemode == "1v1" ? member.name.replace(/[^\x00-\x7F]/g, "") : member.teamname.replace(/[^\x00-\x7F]/g, "")} \n`;
                     let temp = members;
                     temp += str;
                     if (temp.length > 1024) {
@@ -119,16 +143,16 @@ module.exports = {
                 pagesElos.push(elos);
                 for (let i = 0; i < pagesMembers.length; i++) {
                     pages.push(new EmbedBuilder()
-                    .setTitle(`${clanName} 1v1 Ranked Leaderboard`)
+                    .setTitle(`${clanName} ${gamemode == "1v1" ? "1v1" : "2v2"} Ranked Leaderboard`)
                     .setColor('#E78230')
                     .setThumbnail('https://cdn.discordapp.com/attachments/756654864280453134/1132466915550437476/FUGACI_2.png')
                     .setTimestamp(Date.now())
-                    .setURL(`http://corehalla.com/stats/clan/${option}`)
+                    .setURL(`http://corehalla.com/stats/clan/${clanId}`)
                     .setFooter({ text: `Page ${i + 1} of ${pagesMembers.length}` })
                     .setDescription(`**W/L:** ${totalWins}/${totalLosses} • **Average Elo:** ${averageElo}`)
                     .addFields(
-                        { name: 'Member', value: pagesMembers[i], inline: true },
-                        { name: 'Elo', value: pagesElos[i], inline: true },
+                        { name: `${gamemode == "1v1" ? "Member" : "Team"}`, value: pagesMembers[i], inline: true },
+                        { name: 'Peak Elo', value: pagesElos[i], inline: true },
 
                     ));
                 }

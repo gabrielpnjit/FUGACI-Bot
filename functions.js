@@ -749,11 +749,52 @@ function getNextValhallanReset() {
     return timestamp;
 }
 
+// takes in clan-data.json
+function get2sTeams(data) {
+    let uniqueTeams = [];
+    let uniqueIdPairs = new Set(); // use a set to keep track of unique ID pairs so the algorithm is O(n) instead of O(n^2) when using an array
+    // create set of brawlhalla_ids of each player in the clan
+    let clanMemberIds = new Set();
+    for (let member of data) {
+        const brawlhalla_id = member["brawlhalla_id"];
+        if (!clanMemberIds.has(brawlhalla_id)) {
+            clanMemberIds.add(brawlhalla_id);
+        }
+    }
+    // console.log(data[0]["2v2"]);
+    for (let member of data) {
+        if (member["2v2"] == undefined) { // some players may not have played 2s
+            continue;
+        }
+        let teams = member["2v2"];
+        for (let team of teams) {
+            if (team["games"] < 10) { // allowing only teams that have finished placements
+                continue;
+            }
+            const id1 = team.brawlhalla_id_one;
+            const id2 = team.brawlhalla_id_two;
+            if (!clanMemberIds.has(id1) || !clanMemberIds.has(id2)) { // only add teams where both players are in the same clan
+                continue;
+            }
+            const sortedPair = [id1, id2].sort((a, b) => a - b).join(',');
+            if (!uniqueIdPairs.has(sortedPair)) {
+                uniqueIdPairs.add(sortedPair);
+                uniqueTeams.push(team);
+            }
+        }
+    }
+    return uniqueTeams.sort((a, b) => b.peak_rating - a.peak_rating);
+}
+
+// let clanData = JSON.parse((fs.readFileSync('clan-data.json', 'utf8')));
+// console.log(get2sTeams(clanData));
+
 module.exports = {
     getClanElo,
     getClanMembers,
     updateClanData,
     getValhallanElo1v1,
     getValhallanElo2v2,
-    getNextValhallanReset
+    getNextValhallanReset,
+    get2sTeams
 };

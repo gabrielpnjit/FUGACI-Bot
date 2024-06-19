@@ -419,10 +419,10 @@ async function getClanMembers(id) {
         }
 
         let sortedMemberData = clanMembers.sort(compareValues('peak_rating', 'desc'));
-        // add valhallan flag
-        for (let member of sortedMemberData) {
-          console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
-        }
+        // // add valhallan flag - edit: maybe not
+        // for (let member of sortedMemberData) {
+        //   console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
+        // }
         // check for ids with errors
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {
@@ -446,6 +446,11 @@ async function getClanMembers(id) {
             console.log('\x1b[32m', 'SUCCESS: getClanElo Worked Perfectly!');
             clans[id] = [clanName, sortedMemberData];
         }
+
+        fs.writeFile('clan-data.json', JSON.stringify(sortedMemberData, null, 4), (err) => {
+            if (err) throw err;
+            console.log('clan-data.json created successfully')
+        });
 
         return [clanName, sortedMemberData];
     }

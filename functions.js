@@ -419,10 +419,10 @@ async function getClanMembers(id) {
         }
 
         let sortedMemberData = clanMembers.sort(compareValues('peak_rating', 'desc'));
-        // add valhallan flag
-        for (let member of sortedMemberData) {
-          console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
-        }
+        // // add valhallan flag - edit: maybe not
+        // for (let member of sortedMemberData) {
+        //   console.log(`Name: ${member.name}, Rating: ${member.rating}/${member.peak_rating}, Rank: ${member.region_rank}`)
+        // }
         // check for ids with errors
         if (failedIds.length != 0) {
             for (let i = 0; i < failedIds.length; i++) {
@@ -446,6 +446,11 @@ async function getClanMembers(id) {
             console.log('\x1b[32m', 'SUCCESS: getClanElo Worked Perfectly!');
             clans[id] = [clanName, sortedMemberData];
         }
+
+        fs.writeFile('clan-data.json', JSON.stringify(sortedMemberData, null, 4), (err) => {
+            if (err) throw err;
+            console.log('clan-data.json created successfully')
+        });
 
         return [clanName, sortedMemberData];
     }
@@ -645,9 +650,9 @@ function getValhallanElo1v1(region) {
         const $ = cheerio.load(res.data);
         const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        console.log(lastRow.html());
-        console.log(url);
-        console.log(`1v1 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        // console.log(lastRow.html());
+        // console.log(url);
+        // console.log(`1v1 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
         return {
             "region": region,
             "eloCutoff": eloCutoff,
@@ -709,9 +714,9 @@ function getValhallanElo2v2(region) {
         const $ = cheerio.load(res.data);
         const lastRow = $(`tr[data-id="${cutoff >= 25 ? 24 : 14}"]`); // get last row of page if not sa cutoff of 15
         const eloCutoff = lastRow.find('[data-id="seasonRating"]').text().trim();
-        console.log(lastRow.html());
-        console.log(url);
-        console.log(`2v2 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
+        // console.log(lastRow.html());
+        // console.log(url);
+        // console.log(`2v2 Valhallan Elo Cutoff - ${region}: ${eloCutoff}`)
         return {
             "region": region,
             "eloCutoff": eloCutoff,
@@ -743,8 +748,6 @@ function getNextValhallanReset() {
 
     return timestamp;
 }
-
-console.log(getNextValhallanReset());
 
 module.exports = {
     getClanElo,

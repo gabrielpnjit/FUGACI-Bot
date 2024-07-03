@@ -786,8 +786,12 @@ function get2sTeams(data) {
     return uniqueTeams.sort((a, b) => b.peak_rating - a.peak_rating);
 }
 
-// let clanData = JSON.parse((fs.readFileSync('clan-data.json', 'utf8')));
-// console.log(get2sTeams(clanData));
+function getWeaponElos(data) {
+    return data;
+}
+
+let clanData = JSON.parse((fs.readFileSync('clan-data.json', 'utf8')));
+console.log(getWeaponElos(clanData))
 
 module.exports = {
     getClanElo,

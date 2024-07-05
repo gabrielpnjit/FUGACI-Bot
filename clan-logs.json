@@ -2,7 +2,7 @@
     "clan_id": 682808,
     "clan_name": "FUGACI",
     "clan_create_date": 1550198205,
-    "clan_xp": "14990402",
+    "clan_xp": "15844943",
     "clan": [
         {
             "brawlhalla_id": 10182480,
@@ -16,119 +16,108 @@
             "name": "zacky",
             "rank": "Officer",
             "join_date": 1550198251,
-            "xp": 505608
+            "xp": 516347,
+            "xp_diff": 548
         },
         {
             "brawlhalla_id": 3543820,
             "name": "Azu",
             "rank": "Officer",
             "join_date": 1643518033,
-            "xp": 536393
+            "xp": 552543
         },
         {
             "brawlhalla_id": 553289,
             "name": "Solzda",
             "rank": "Member",
             "join_date": 1647160920,
-            "xp": 128808
+            "xp": 128912
         },
         {
             "brawlhalla_id": 43936530,
             "name": "Pat Price",
             "rank": "Member",
             "join_date": 1669918253,
-            "xp": 222960
+            "xp": 223793
         },
         {
             "brawlhalla_id": 95736323,
             "name": "BicBoi3",
             "rank": "Officer",
             "join_date": 1672104505,
-            "xp": 206063
+            "xp": 211612
         },
         {
             "brawlhalla_id": 23758372,
             "name": "Avocuddle",
             "rank": "Member",
             "join_date": 1672794667,
-            "xp": 391647
+            "xp": 422490
         },
         {
             "brawlhalla_id": 2622989,
             "name": "JellyTheAce",
             "rank": "Member",
             "join_date": 1675653775,
-            "xp": 300234
+            "xp": 303872
         },
         {
             "brawlhalla_id": 3843154,
             "name": "b1unts",
             "rank": "Leader",
             "join_date": 1682049956,
-            "xp": 383179
+            "xp": 401333,
+            "xp_diff": 246
         },
         {
             "brawlhalla_id": 71837320,
-            "name": "M3W | yokey ðµð¸",
+            "name": "+1,000,000 aura",
             "rank": "Member",
             "join_date": 1682797461,
-            "xp": 256392
+            "xp": 282178
         },
         {
             "brawlhalla_id": 55048991,
-            "name": "Ryukira",
+            "name": "Ryuchigga",
             "rank": "Officer",
             "join_date": 1682980672,
-            "xp": 327336
-        },
-        {
-            "brawlhalla_id": 9746628,
-            "name": "N",
-            "rank": "Member",
-            "join_date": 1685036107,
-            "xp": 284712
+            "xp": 355072
         },
         {
             "brawlhalla_id": 79957875,
             "name": "Rigg",
             "rank": "Member",
             "join_date": 1686348570,
-            "xp": 219895
+            "xp": 235592
         },
         {
             "brawlhalla_id": 33962871,
             "name": "Tee",
             "rank": "Member",
             "join_date": 1688684784,
-            "xp": 298076
-        },
-        {
-            "brawlhalla_id": 79396294,
-            "name": "ã",
-            "rank": "Member",
-            "join_date": 1689387400,
-            "xp": 136566
+            "xp": 325147
         },
         {
             "brawlhalla_id": 41241821,
             "name": "Empty",
             "rank": "Officer",
             "join_date": 1691783626,
-            "xp": 127960
+            "xp": 129245
         },
         {
             "brawlhalla_id": 9240446,
             "name": "StATiC",
             "rank": "Member",
             "join_date": 1692376828,
-            "xp": 89463
+            "xp": 104617,
+            "xp_diff": 816
         },
         {
             "brawlhalla_id": 7775629,
             "name": "Coronavirus but laggy af",
             "rank": "Member",
             "join_date": 1693962160,
-            "xp": 273415
+            "xp": 303184
         },
         {
             "brawlhalla_id": 62099123,
@@ -139,213 +128,251 @@
         },
         {
             "brawlhalla_id": 67266260,
-            "name": "Mo",
+            "name": "Mokoffee",
             "rank": "Member",
             "join_date": 1700090738,
-            "xp": 143631
+            "xp": 158876,
+            "xp_diff": 536
         },
         {
             "brawlhalla_id": 76388721,
             "name": "Autumn!",
             "rank": "Member",
             "join_date": 1700434847,
-            "xp": 88782
+            "xp": 92771
         },
         {
             "brawlhalla_id": 71906274,
-            "name": "Blerpgyatus",
-            "rank": "Officer",
+            "name": "Dr.Banana",
+            "rank": "Member",
             "join_date": 1700698132,
-            "xp": 263941
+            "xp": 302890,
+            "xp_diff": 280
         },
         {
             "brawlhalla_id": 37033863,
             "name": "Plas",
             "rank": "Member",
             "join_date": 1703725942,
-            "xp": 15939
-        },
-        {
-            "brawlhalla_id": 95772335,
-            "name": "rango",
-            "rank": "Member",
-            "join_date": 1703922011,
-            "xp": 93224
+            "xp": 17394
         },
         {
             "brawlhalla_id": 37135088,
-            "name": "TorOn60hz",
+            "name": "tor (IMUGI 4L)",
             "rank": "Member",
             "join_date": 1704400493,
-            "xp": 185044
+            "xp": 227752,
+            "xp_diff": 935
         },
         {
             "brawlhalla_id": 85879854,
             "name": "Rare gyat sighting",
             "rank": "Officer",
             "join_date": 1705268423,
-            "xp": 40898
+            "xp": 49131,
+            "xp_diff": 41
         },
         {
             "brawlhalla_id": 24935202,
-            "name": "JaeBlade",
+            "name": "Baby Zekrom",
             "rank": "Member",
             "join_date": 1707353876,
-            "xp": 102491
+            "xp": 117417
         },
         {
             "brawlhalla_id": 108556242,
-            "name": "fragile",
+            "name": "traplord4721",
             "rank": "Member",
             "join_date": 1708054675,
-            "xp": 120944
+            "xp": 171707,
+            "xp_diff": 976
         },
         {
             "brawlhalla_id": 30121951,
             "name": "DooRags",
             "rank": "Member",
             "join_date": 1708549723,
-            "xp": 38302
+            "xp": 46521,
+            "xp_diff": 691
         },
         {
             "brawlhalla_id": 78921161,
-            "name": "YBN Bartholomew",
+            "name": "Klispry",
             "rank": "Member",
             "join_date": 1708553124,
-            "xp": 62528
+            "xp": 80685,
+            "xp_diff": 197
         },
         {
             "brawlhalla_id": 100518062,
             "name": "cant fix stupid",
             "rank": "Member",
             "join_date": 1709337684,
-            "xp": 36671
+            "xp": 40731,
+            "xp_diff": 77
         },
         {
             "brawlhalla_id": 44991246,
             "name": "kramixz",
             "rank": "Member",
             "join_date": 1710003101,
-            "xp": 31386
+            "xp": 37812
         },
         {
             "brawlhalla_id": 69481549,
-            "name": "walk",
+            "name": "cut",
             "rank": "Member",
             "join_date": 1710036103,
-            "xp": 56798
+            "xp": 61890
         },
         {
             "brawlhalla_id": 95862623,
             "name": "CombatGenji",
             "rank": "Officer",
             "join_date": 1710181296,
-            "xp": 118128
-        },
-        {
-            "brawlhalla_id": 62478295,
-            "name": "DOFFY",
-            "rank": "Member",
-            "join_date": 1710633575,
-            "xp": 27689
+            "xp": 147665,
+            "xp_diff": 1346
         },
         {
             "brawlhalla_id": 56045251,
             "name": "whitebeard",
             "rank": "Member",
             "join_date": 1710818930,
-            "xp": 72652
-        },
-        {
-            "brawlhalla_id": 5462731,
-            "name": "Woods",
-            "rank": "Member",
-            "join_date": 1711497084,
-            "xp": 20491
+            "xp": 87580
         },
         {
             "brawlhalla_id": 58476983,
-            "name": "I <3 Dusk",
+            "name": "vice city",
             "rank": "Member",
             "join_date": 1711584699,
-            "xp": 109132
-        },
-        {
-            "brawlhalla_id": 80787161,
-            "name": "jump",
-            "rank": "Member",
-            "join_date": 1714859377,
-            "xp": 2674
+            "xp": 137754,
+            "xp_diff": 111
         },
         {
             "brawlhalla_id": 130057,
-            "name": "Bready4it (new keyboard)",
+            "name": "Bready4it",
             "rank": "Member",
             "join_date": 1714933900,
-            "xp": 17351
+            "xp": 35982,
+            "xp_diff": 580
         },
         {
             "brawlhalla_id": 76608900,
-            "name": "chloe",
+            "name": "itty bitty",
             "rank": "Member",
             "join_date": 1715561967,
-            "xp": 10542
+            "xp": 37965
         },
         {
             "brawlhalla_id": 66498250,
             "name": "King of Ephyra",
             "rank": "Member",
             "join_date": 1716323072,
-            "xp": 18712
+            "xp": 48643,
+            "xp_diff": 325
         },
         {
             "brawlhalla_id": 106954367,
             "name": "Mango",
             "rank": "Member",
             "join_date": 1716764345,
-            "xp": 7822
+            "xp": 13087
         },
         {
             "brawlhalla_id": 103028309,
             "name": "Astro",
             "rank": "Member",
             "join_date": 1716777483,
-            "xp": 11977
+            "xp": 39831,
+            "xp_diff": 708
         },
         {
             "brawlhalla_id": 10203628,
-            "name": "à¹",
+            "name": "kaneki",
             "rank": "Member",
             "join_date": 1717513562,
-            "xp": 7585
+            "xp": 49600,
+            "xp_diff": 119
         },
         {
             "brawlhalla_id": 106482673,
-            "name": "YRN | tana",
+            "name": "chat is this real?",
             "rank": "Member",
             "join_date": 1717515020,
-            "xp": 14172
+            "xp": 34622
         },
         {
             "brawlhalla_id": 66096220,
             "name": "Corinthians 16:14",
             "rank": "Member",
             "join_date": 1717540569,
-            "xp": 7894
-        },
-        {
-            "brawlhalla_id": 72705901,
-            "name": "Binx",
-            "rank": "Member",
-            "join_date": 1717887245,
-            "xp": 4132
+            "xp": 18308
         },
         {
             "brawlhalla_id": 62038406,
             "name": "^ ^0ð 90210",
             "rank": "Member",
             "join_date": 1717997903,
-            "xp": 680
+            "xp": 11158,
+            "xp_diff": 624
+        },
+        {
+            "brawlhalla_id": 9027223,
+            "name": "XIBLURHINO",
+            "rank": "Member",
+            "join_date": 1718328444,
+            "xp": 8235
+        },
+        {
+            "brawlhalla_id": 110502617,
+            "name": "Jocelyn",
+            "rank": "Member",
+            "join_date": 1718838475,
+            "xp": 13530,
+            "xp_diff": 396
+        },
+        {
+            "brawlhalla_id": 9746628,
+            "name": "Solo",
+            "rank": "Member",
+            "join_date": 1719094394,
+            "xp": 18909,
+            "xp_diff": 457
+        },
+        {
+            "brawlhalla_id": 95772335,
+            "name": "McMoneyston",
+            "rank": "Member",
+            "join_date": 1719102498,
+            "xp": 19826
+        },
+        {
+            "brawlhalla_id": 88005433,
+            "name": "conner_882.0",
+            "rank": "Member",
+            "join_date": 1719273029,
+            "xp": 2679
+        },
+        {
+            "brawlhalla_id": 102204293,
+            "name": "agt ray",
+            "rank": "Member",
+            "join_date": 1719274319,
+            "xp": 6478
+        },
+        {
+            "brawlhalla_id": 76558389,
+            "name": "YuK.",
+            "rank": "Member",
+            "join_date": 1719442047,
+            "xp": 1404
+        },
+        {
+            "brawlhalla_id": 113771911,
+            "name": "#NODIDDY",
+            "rank": "Member",
+            "join_date": 1719642158,
+            "xp": 13744
         }
     ]
 }

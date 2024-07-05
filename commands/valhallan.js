@@ -31,8 +31,8 @@ module.exports = {
         const eloOnes = await getValhallanElo1v1(region);
         const eloTwos = await getValhallanElo2v2(region);
         const resetTime = getNextValhallanReset();
-        const seasonEndTime = "1719997200";
-        const valhallanStartTime = "1713362400";
+        const seasonEndTime = "1727272800";
+        const valhallanStartTime = "1721206800";
         const currTimestamp = Math.floor(Date.now() / 1000);
         const embed = new EmbedBuilder()
         .setTitle(`${valhallanEmoji} Valhallan Elo ${(region == "sa" ? "SAF" : region).toUpperCase()} ${valhallanEmoji}`)

@@ -13,3 +13,5 @@ This is a multi-purpose Discord bot for the FUGACI Discord Server
 ![image](https://github.com/user-attachments/assets/9f801444-be64-4834-94c6-ebe225c12c40)
 ## Clan Logs
 ![image](https://github.com/user-attachments/assets/8c6080b9-4d3c-4107-a51a-f32e31cc8e50)
+## Valhallan Elo Checker
+![image](https://github.com/user-attachments/assets/ada45af9-6352-49d5-9ee7-99d152576dec)
